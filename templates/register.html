@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vital Nest</title>
+</head>
+<body>
+    <h1>Thank you for choosing us</h1>
+    <h2>Welcome to Vital Nest - your health is our concern</h2>
+    <form action="/registerToDB" method="post">
+        <label for="aadhar"> Aadhar Id </label>
+        <input type="text" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required>
+        <br>
+        <label for="uname"> User Name </label>
+        <input type="text" name="uname" maxlength="25">
+        <br>
+        <label for="mobile"> Mobile Number </label>
+        <input type="text" name="mobile" pattern="\d{10}" maxlength="10" minlength="10" required>
+        <br>
+        <label for="passwd"> passwd </label>
+        <input type="password" name="passwd" maxlength="15" minlength="8" required>
+        <br>
+        <label for="utype"> Type of user</label>
+        <select name="utype" required>
+            <option value="" disabled selected> Select the kind of user</option>
+            <option value = "supplier">Supplier</option>
+            <option value = "Hospital">Hospital</option>
+            <option value = "industry">Industry</option>
+        </select>
+        <br>
+        <input type="submit" value="register">
+    </form>
+</body>
+</html>

@@ -7,5 +7,16 @@
 </head>
 <body>
     <h1>Welcome to VitalNest</h1>
+    <form action="/login" method="post">
+        <label for="aadhar"> Aadhar Id </label>
+        <input type="text" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required>
+        <br>
+        <label for="passwd"> passwd </label>
+        <input type="password" name="passwd" maxlength="15" minlength="8" required>
+        <br>
+        <input type="submit" value="login">
+    </form>
+    <hr>
+    <a href="{{url_for('register')}}">Not yet registered??? click me</a>
 </body>
 </html>
