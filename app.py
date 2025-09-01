@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, request, url_for
 import sys
 import mysql.connector as sql
 
-conn = sql.connect(host = "localhost", user = "root", passwd="Pavitra@01", database = "vital_nest_flask_solution")
+conn = sql.connect(host = "localhost", user = "root", passwd="iphone@2020", database = "vital_nest_flask_solution")
 if(conn.is_connected):
     print("Connected Successfully")
 else:
