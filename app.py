@@ -40,8 +40,10 @@ def login():
         elif user_type=="Industry":
             return render_template('industry_dashboard.html')
         else:
-            return render_template('admin_dashboard.html')    
-        return "Welcome on board"
+            sql = "select * from acl_list"
+            curr.execute(sql)
+            result = curr.fetchall()
+            return render_template('admin_dashboard.html', result = result)    
 
 @app.route('/register')
 def register():
