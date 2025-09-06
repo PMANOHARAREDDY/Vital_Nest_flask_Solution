@@ -3,21 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask based Solution for VitalNest</title>
+    <title>VitalNest Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body
-    style ="background-color : blue">
-    <h2>Welcome to VitalNest</h2>
-    <form action="/login" method="post">
-        <label for="aadhar"> Aadhar Id </label>
-        <input type="text" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required>
-        <br>
-        <label for="passwd"> passwd </label>
-        <input type="password" name="passwd" maxlength="15" minlength="8" required>
-        <br>
-        <input type="submit" value="login">
-    </form>
-    <hr>
-    <a href="{{url_for('register')}}">Not yet registered??? click me</a>
+<body style="background-color: #f7f7fb;">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Welcome to VitalNest</h2>
+        <form action="/login" method="post" class="mx-auto" style="max-width: 400px;">
+            <div class="form-group">
+                <label for="aadhar">Aadhar ID</label>
+                <input type="text" class="form-control" id="aadhar" name="aadhar"
+                       pattern="\d{12}" maxlength="12" minlength="12" required>
+            </div>
+            <div class="form-group">
+                <label for="passwd">Password</label>
+                <input type="password" class="form-control" id="passwd" name="passwd"
+                       maxlength="15" minlength="8" required>
+            </div>
+            <button type="submit" class="btn btn-outline-primary btn-block">Login</button>
+        </form>
+        <p class="text-center mt-3">
+            <a href="{{ url_for('register') }}">Not yet registered? Click here</a>
+        </p>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
