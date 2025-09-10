@@ -46,8 +46,12 @@ def login():
             elif user_type=="industry":
                 query = "select ind_id from ind_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
-                ind_id = curr.fetchone()[0] 
-                return render_template('industry_dashboard.html', ind_id = ind_id)
+                ind_id = curr.fetchone()[0]
+                print(ind_id) 
+                query = "select * from medicine_data where ind_id = '{}'".format(ind_id)
+                medicines = curr.fetchall()
+                print(medicines)
+                return render_template('industry_dashboard.html', ind_id = ind_id, medicines = medicines)
             elif user_type=="Rep":
                 return render_template("representative_dashboard.html")
             else:
@@ -82,6 +86,18 @@ def registerToDB():
     query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, utype)
     curr.execute(query)
     conn.commit()
+    return redirect(url_for('home'))
+
+@app.route('/newMedicine', methods=["GET", "POST"])
+def addNewMedicine():
+    med_name = request.form.get('med_name')
+    uses = request.form.get('uses')
+    side_effects = request.form.get('side_effects')
+    ind_id = request.form.get('ind_id')
+    query = "insert into medicine_data values('{}', '{}', '{}', '{}')".format(ind_id, med_name, uses, side_effects)
+    curr.execute(query)
+    conn.commit()
+    print("new medicine's data has been sent successfully")
     return redirect(url_for('home'))
 
 if __name__ == "__main__":

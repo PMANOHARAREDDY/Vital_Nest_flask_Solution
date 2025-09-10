@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VitalNest Login</title>
+    <link rel = "stylesheet" href = "/static/style.css">
 </head>
 <body>
     <div>
         <h2>Welcome to VitalNest</h2>
-        <form action="/login" method="post">
-            <div>
+        <form action="/login" method="post" class="box">
+            <div class = "container"> 
+                <h3>
+                    <b>Login</b>
+                </h3>
+            </div>
+            <div class="form">
                 <label for="aadhar">Aadhar ID</label>
                 <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required>
             </div>
-            <div>
+            <div class="form">
                 <label for="passwd">Password</label>
                 <input type="password" id="passwd" name="passwd" maxlength="15" minlength="8" required>
             </div>

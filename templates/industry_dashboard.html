@@ -7,7 +7,31 @@
 </head>
 <body>
     <h1>Vital Nest pharma Industry Dashboard {{ind_id}}</h1>
-    POSSIBLE CORE FEATURES
-        1. TO INTRODUCE A NEW TABLET WITH BLOGS AND THESE DATA CAN BE ACCESSED BY MEDICAL REPRESENTATIVES
+    <hr>
+    <div>
+        <h2>Medicine data</h2>
+        <ul>
+            {% for medicine in medicines %}
+            <li>{{medicine}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <hr>
+    <form action="/newMedicine" method="post">
+        
+        <input type="hidden" name="ind_id" value="{{ind_id}}">
+
+        <label>Tablet Name:</label><br>
+        <input type="text" name="med_name" required><br><br>
+        
+        <label>Uses:</label><br>
+        <input type="text" name="uses"><br><br>
+
+        <label>Side Effects:</label><br>
+        <input type="text" name="side_effects"><br><br>
+        
+        <input type="submit" value="Submit">
+</form>
+
 </body>
 </html>
