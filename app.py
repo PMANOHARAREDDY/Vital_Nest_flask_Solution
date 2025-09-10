@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, request, url_for
 import sys
 import mysql.connector as sql
 
-conn = sql.connect(host = "localhost", user = "root", passwd="iphone@2020", database = "vital_nest_flask_solution")
+conn = sql.connect(host = "localhost", user = "root", passwd="Pavitra@01", database = "vital_nest_flask_solution")
 if(conn.is_connected):
     print("Connected Successfully")
 else:
@@ -40,8 +40,10 @@ def login():
         elif user_type=="Industry":
             return render_template('industry_dashboard.html')
         else:
-            return render_template('admin_dashboard.html')    
-        return "Welcome on board"
+            sql = "select * from acl_list"
+            curr.execute(sql)
+            result = curr.fetchall()
+            return render_template('admin_dashboard.html', result = result)    
 
 @app.route('/register')
 def register():
