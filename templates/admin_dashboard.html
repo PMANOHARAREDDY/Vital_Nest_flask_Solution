@@ -6,19 +6,38 @@
     <title>VitalNest</title>
 </head>
 <body>
-    <h1>Vital Nest Admin Dashboard</h1>
+    <h1>Vital Nest Admin Dashboard - {{admin_id}}</h1>
     <div>
         <h2>Users data</h2>
-        <h3>{{users}}</h3>
+        <ul>
+            {% for user in users %}
+            <li>{{user}}</li>
+            {% endfor %}
+        </ul>
     </div>
-    <h1>Vital Nest Admin Dashboard</h1>
     <div>
         <h2>Log Data</h2>
-        <h3>{{logs}}</h3>
+        <ul>
+            {% for log in logs %}
+            <li>{{log}}</li>
+            {% endfor %}
+        </ul>
     </div>
     <div>
         <h2>Supply data</h2>
-        <h3>{{supply_data}}</h3>
+        <ul>
+            {% for item in supply %}
+            <li>{{item}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h2>Hospital management data</h2>
+        <ul>
+            {% for hsptl in hsp_data %}
+            <li>{{hsptl}}</li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>

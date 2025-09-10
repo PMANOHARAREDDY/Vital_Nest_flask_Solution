@@ -30,20 +30,43 @@ def login():
         curr.execute(query)
         res = curr.fetchone()
         real_passwd = res[0]
-        user_type = res[1]
-        print(real_passwd)
-        print(user_type)
-        if user_type=="Hospital":
-            return render_template('hospital_dashboard.html')
-        elif user_type=="Supplier":
-            return render_template('supplier_dashboard.html')
-        elif user_type=="Industry":
-            return render_template('industry_dashboard.html')
+        if real_passwd == passwd:
+            query = "insert into log_table (aadhar) values({})".format(aadhar)
+            curr.execute(query)
+            conn.commit()
+            user_type = res[1]
+            if user_type=="hospital":
+                query = "select hsp_id from hsp_identity where manager_id = {}".format(aadhar)
+                res = curr.execute(query)
+                hsp_id = curr.fetchone()[0] 
+                print(hsp_id)
+                return render_template('hospital_dashboard.html', hsp_id = hsp_id)
+            elif user_type=="distributor":
+                return render_template('supplier_dashboard.html')
+            elif user_type=="industry":
+                query = "select ind_id from ind_identity where manager_id = {}".format(aadhar)
+                res = curr.execute(query)
+                ind_id = curr.fetchone()[0] 
+                return render_template('industry_dashboard.html', ind_id = ind_id)
+            elif user_type=="Rep":
+                return render_template("representative_dashboard.html")
+            else:
+                sql = "select name, aadhar, mobile, user_type  from acl_list where user_type<>'admin'"
+                curr.execute(sql)
+                Users_data = curr.fetchall()
+                sql = "select aadhar, log_timestamp from log_table order by log_timestamp desc"
+                curr.execute(sql)
+                Log_data = curr.fetchall()
+                sql = "select * from inventory_data order by hsp_id, supplier_id , supplied_timestamp desc"
+                curr.execute(sql)
+                supply_data = curr.fetchall()
+                sql = "select hsp_identity.hsp_id, hsp_identity.manager_id, acl_list.mobile from hsp_identity join acl_list on acl_list.aadhar = hsp_identity.manager_id"
+                curr.execute(sql)
+                hsp_data = curr.fetchall()
+                return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, logs = Log_data, supply = supply_data, hsp_data = hsp_data)
         else:
-            sql = "select * from acl_list"
-            curr.execute(sql)
-            result = curr.fetchall()
-            return render_template('admin_dashboard.html', result = result)    
+            print("Passwd Not Matching try again....")
+            return render_template('index.html')    
 
 @app.route('/register')
 def register():
