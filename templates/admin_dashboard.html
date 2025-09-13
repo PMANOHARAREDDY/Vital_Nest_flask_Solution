@@ -7,37 +7,112 @@
 </head>
 <body>
     <h1>Vital Nest Admin Dashboard - {{admin_id}}</h1>
+    <hr>
     <div>
         <h2>Users data</h2>
-        <ul>
-            {% for user in users %}
-            <li>{{user}}</li>
-            {% endfor %}
-        </ul>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Aadhar</th>
+                    <th>Mobile Number</th>
+                    <th>User Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                    <td>{{ user[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    <hr>
     <div>
         <h2>Log Data</h2>
-        <ul>
-            {% for log in logs %}
-            <li>{{log}}</li>
-            {% endfor %}
-        </ul>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Aadhar</th>
+                    <th>Log Time Stamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log[0] }}</td>
+                    <td>{{ log[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2>Inventory Data</h2>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Supplier ID</th>
+                    <th>Quantity</th>
+                    <th>Item</th>
+                    <th>Price Per Unit</th>
+                    <th>Supplied Timestamp</th>
+                    <th>HSP ID</th>
+                    <th>Type of Product</th>
+                    <th>IND ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventory in supply %}
+                <tr>
+                    <td>{{ inventory[0] }}</td>
+                    <td>{{ inventory[1] }}</td>
+                    <td>{{ inventory[2] }}</td>
+                    <td>{{ inventory[3] }}</td>
+                    <td>{{ inventory[4] }}</td>
+                    <td>{{ inventory[5] }}</td>
+                    <td>{{ inventory[6] }}</td>
+                    <td>{{ inventory[7] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2>Data Records</h2>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>HSP ID</th>
+                    <th>Supplier ID</th>
+                    <th>IND ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in hsp_data %}
+                <tr>
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div>
-        <h2>Supply data</h2>
-        <ul>
-            {% for item in supply %}
-            <li>{{item}}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div>
-        <h2>Hospital management data</h2>
-        <ul>
-            {% for hsptl in hsp_data %}
-            <li>{{hsptl}}</li>
-            {% endfor %}
-        </ul>
+        <h2>Search for Patient Records log Data</h2>
+        <form action="/patientRecordsLogData" method="post">
+            <label for="aadhar">Patient ID (Aadhar):</label><br>
+            <input type="text" id="p_id" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+            
+            <input type="submit" value="Submit">
+        </form>
     </div>
 </body>
 </html>

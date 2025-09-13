@@ -9,17 +9,85 @@
 <body >
     <div class = "header">
         <h2>VitalNest Hospital_dashBoard - {{hsp_id}}</h2>
-        <div class="top-bar">
-            <a href="#">Login</a>
-            <a href="#">Signup</a>
     </div>
-    </div>
+    <hr>
     <h2><span>&#128522</span> Where life begins again...........</h2>
     <div class = "image-row">
         <img src = "/static/dashboard.jpg" alt = "hospital" >
         <img src = "/static/Doctor_Holding_Stethoscope.webp" alt = "doctor">
         <img src = "/static/Older-patient.jpg" alt = "patient">
     </div>
+    <hr>
+    <div>
+        <h2>Patient Billing</h2>
+        <form action="/billPatient" method="post" id="billForm">
+            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
 
+            <label for="aadhar">Aadhar ID :</label>
+            <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+    
+            <div id="items-container">
+                <div class="item-row">
+                    <label>Item :</label>
+                    <input type="text" name="item[]">
+                    <label>Quantity :</label>
+                    <input type="number" name="quantity[]" min="1" max="30">
+                    <button type="button" onclick="removeItem(this)">Remove</button>
+                    <br><br>
+                </div>
+            </div>
+            <button type="button" onclick="addItem()">Add Item</button><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <hr>
+    <div>
+        <h2>Patient Treatment Records Updation</h2>
+        <form action="/addTreatmentRecord" method="post">
+            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+
+            <label for="p_id">Patient ID (Aadhar):</label><br>
+            <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+  
+            <label for="disease_remark">Disease Remark:</label><br>
+            <input type="text" id="disease_remark" name="disease_remark" maxlength="50"><br><br>
+  
+            <label for="treatment_remark">Treatment Remark:</label><br>
+            <input type="text" id="treatment_remark" name="treatment_remark" maxlength="50"><br><br>
+  
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <hr>
+    <div>
+        <h2>Search for Patient Records</h2>
+        <form action="/patientRecords" method="post">
+            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+
+            <label for="aadhar">Patient ID (Aadhar):</label><br>
+            <input type="text" id="p_id" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+            
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <script>
+        function addItem() {
+            var container = document.getElementById('items-container');
+            var row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML = 
+                '<label>Item :</label>' +
+                '<input type="text" name="item[]">' +
+                '<label>Quantity :</label>' +
+                '<input type="number" name="quantity[]" min="1" max="30">' +
+                '<button type="button" onclick="removeItem(this)">Remove</button><br><br>';
+            container.appendChild(row);
+        }
+
+        function removeItem(btn) {
+            var row = btn.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
 </body>
 </html>

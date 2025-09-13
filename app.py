@@ -47,7 +47,6 @@ def login():
                 query = "select hsp_id from hsp_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
                 hsp_id = curr.fetchone()[0] 
-                print(hsp_id)
                 return render_template('hospital_dashboard.html', hsp_id = hsp_id)
             elif user_type=="distributor":
                 return render_template('supplier_dashboard.html')
@@ -55,10 +54,9 @@ def login():
                 query = "select ind_id from ind_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
                 ind_id = curr.fetchone()[0]
-                print(ind_id) 
-                query = "select * from medicine_data where ind_id = '{}'".format(ind_id)
+                query = "select medicine_name, uses, side_effects from medicine_data where ind_id = '{}'".format(ind_id)
+                curr.execute(query)
                 medicines = curr.fetchall()
-                print(medicines)
                 return render_template('industry_dashboard.html', ind_id = ind_id, medicines = medicines)
             elif user_type=="Rep":
                 return render_template("representative_dashboard.html")
@@ -107,6 +105,56 @@ def addNewMedicine():
     conn.commit()
     print("new medicine's data has been sent successfully")
     return redirect(url_for('home'))
+
+@app.route('/billPatient', methods=["GET", "POST"])
+def billPatient():
+    hsp_id = request.form.get('hsp_id')
+    aadhar = request.form.get('aadhar')
+    items = request.form.getlist('item[]')
+    quantities = request.form.getlist('quantity[]')
+    query = "insert into patient_data (p_id, item, quantity, hsp_id) VALUES (%s, %s, %s, %s)"
+    for item, qty in zip(items, quantities):
+        curr.execute(query, (aadhar, item, int(qty), hsp_id))
+    conn.commit()
+    print("Patient Data Recorded Successfully")
+    return render_template('hospital_dashboard.html', hsp_id = hsp_id)
+
+@app.route('/addTreatmentRecord', methods=["GET", "POST"])
+def addTreatmentRecord():
+    hsp_id = request.form.get('hsp_id')
+    aadhar = request.form.get('p_id')
+    disease_remark = request.form.get('disease_remark')
+    treatment_remark = request.form.get('treatment_remark')
+    print(aadhar)
+    print(disease_remark)
+    print(treatment_remark)
+    print(hsp_id)
+    query = "insert into treatment_record (p_id, disease_remark, treatment_remark, hsp_id) values('{}','{}','{}','{}')".format(aadhar, disease_remark, treatment_remark, hsp_id)
+    curr.execute(query)
+    conn.commit()
+    print("patient's data has been successfully updated")
+    return render_template('hospital_dashboard.html', hsp_id = hsp_id)
+
+@app.route('/patientRecords', methods=["GET", "POST"])
+def patientRecords():
+    aadhar = request.form.get('aadhar')
+    hsp_id = request.form.get('hsp_id')
+    query = "select * from treatment_record where p_id = '{}'".format(aadhar)
+    curr.execute(query)
+    records = curr.fetchall()
+    query = "insert into patient_records_accessed_log_data (hsp_id, p_id) values('{}', '{}')".format(hsp_id, aadhar)
+    curr.execute(query)
+    conn.commit()
+    return render_template('patient_records.html', hsp_id = hsp_id, records = records)
+
+@app.route("/patientRecordsLogData", methods=["GET", "POST"])
+def patientRecordsLogData():
+    p_id = request.form.get('aadhar')
+    print(p_id)
+    query = "select * from patient_records_accessed_log_data where p_id = '{}'".format(p_id)
+    curr.execute(query)
+    records = curr.fetchall()
+    return render_template('patient_records_logs.html', records = records)
 
 if __name__ == "__main__":
     app.run(debug = True)
