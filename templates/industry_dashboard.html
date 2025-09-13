@@ -10,11 +10,24 @@
     <hr>
     <div>
         <h2>Medicine data</h2>
-        <ul>
-            {% for medicine in medicines %}
-            <li>{{medicine}}</li>
-            {% endfor %}
-        </ul>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Uses</th>
+                    <th>Side Effects</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for medicine in medicines %}
+                <tr>
+                    <td>{{ medicine[0] }}</td>
+                    <td>{{ medicine[1] }}</td>
+                    <td>{{ medicine[2] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <hr>
     <form action="/newMedicine" method="post">
@@ -31,7 +44,6 @@
         <input type="text" name="side_effects"><br><br>
         
         <input type="submit" value="Submit">
-</form>
-
+    </form>
 </body>
 </html>
