@@ -76,3 +76,13 @@ body {
     display: flex;
     justify-content: center;
 }
+
+
+
+.s_header{
+    display : flex;
+    align-items: center;
+    background-color: rgb(54, 212, 159);
+    padding : 20px;
+    margin :10px;
+}
