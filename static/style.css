@@ -1,11 +1,11 @@
-h1 {
+.h1 {
     font-size: 80px;
     font-family: 'Times New Roman', Times, serif;
     color : blue;
     margin: auto;
 }
 
-h2{
+.h2{
     font-family: 'Times New Roman', Times, serif;
     color: black;
 }
@@ -67,7 +67,7 @@ body {
 .box{
     width : 300px;
     height : 200px;
-    background-color: pink;
+    background-color: rgb(182, 232, 255);
     padding: 50px;
     margin : 100px 450px;
 }
@@ -85,4 +85,46 @@ body {
     background-color: rgb(54, 212, 159);
     padding : 20px;
     margin :10px;
+}
+
+.register_card_design{
+    padding: 20px;
+    background-color: rgb(166, 235, 251);
+    border-top-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-top-right-radius: 40px;
+    text-align: center;
+    height: 70vh;
+    max-width: 100vw;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+
+}
+
+.register_card_background{
+    background-image: url("https://thumbs.dreamstime.com/b/illustration-hospital-registration-area-featuring-computers-reception-desk-plants-ideal-healthcare-related-designs-376121696.jpg");
+    background-size: cover;
+   
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+
+}
+
+.register_card_button{
+    background-color: rgb(57, 55, 179);
+    border-radius: 20px;
+    text-align: center;
+    color:white;
+    border-width: 0px;
+    width: 20vw;
+    height: 36px;
+
+}
+
+.register_card_text_design{
+    font-family: "Bree Serif";
+    color: rgb(52, 47, 47);
+    text-align: center;
 }
