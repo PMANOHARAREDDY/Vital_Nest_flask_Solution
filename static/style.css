@@ -81,7 +81,7 @@ body {
 
 .s_header{
     display : flex;
-    align-items: center;
+    text-align: left;
     background-color: rgb(54, 212, 159);
     padding : 20px;
     margin :10px;
