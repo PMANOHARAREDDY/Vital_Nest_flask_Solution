@@ -5,7 +5,7 @@ import mysql.connector as sql
 conn = sql.connect(
     host='127.0.0.1',
     user='root',
-    password='iphone@2020',
+    password='Pavitra@01',
     database='vital_nest_flask_solution',
     port=3306,
     auth_plugin='mysql_native_password',
@@ -73,7 +73,10 @@ def login():
                 sql = "select hsp_identity.hsp_id, hsp_identity.manager_id, acl_list.mobile from hsp_identity join acl_list on acl_list.aadhar = hsp_identity.manager_id"
                 curr.execute(sql)
                 hsp_data = curr.fetchall()
-                return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, logs = Log_data, supply = supply_data, hsp_data = hsp_data)
+                sql = "select name, aadhar, mobile, user_type, request_timestamp, passwd from registration_approval_data where approval_status = 'not approved'"
+                curr.execute(sql)
+                approval_data = curr.fetchall()
+                return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, logs = Log_data, supply = supply_data, hsp_data = hsp_data, approval_data = approval_data)
         else:
             print("Passwd Not Matching try again....")
             return render_template('index.html')    
@@ -89,7 +92,7 @@ def registerToDB():
     mobile = request.form.get('mobile')
     passwd = request.form.get('passwd')
     utype = request.form.get('utype')
-    query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, utype)
+    query = "insert into registration_approval_data (name, aadhar, mobile, passwd, user_type) values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, utype)
     curr.execute(query)
     conn.commit()
     return redirect(url_for('home'))
@@ -103,7 +106,6 @@ def addNewMedicine():
     query = "insert into medicine_data values('{}', '{}', '{}', '{}')".format(ind_id, med_name, uses, side_effects)
     curr.execute(query)
     conn.commit()
-    print("new medicine's data has been sent successfully")
     return redirect(url_for('home'))
 
 @app.route('/billPatient', methods=["GET", "POST"])
@@ -116,7 +118,6 @@ def billPatient():
     for item, qty in zip(items, quantities):
         curr.execute(query, (aadhar, item, int(qty), hsp_id))
     conn.commit()
-    print("Patient Data Recorded Successfully")
     return render_template('hospital_dashboard.html', hsp_id = hsp_id)
 
 @app.route('/addTreatmentRecord', methods=["GET", "POST"])
@@ -125,14 +126,9 @@ def addTreatmentRecord():
     aadhar = request.form.get('p_id')
     disease_remark = request.form.get('disease_remark')
     treatment_remark = request.form.get('treatment_remark')
-    print(aadhar)
-    print(disease_remark)
-    print(treatment_remark)
-    print(hsp_id)
     query = "insert into treatment_record (p_id, disease_remark, treatment_remark, hsp_id) values('{}','{}','{}','{}')".format(aadhar, disease_remark, treatment_remark, hsp_id)
     curr.execute(query)
     conn.commit()
-    print("patient's data has been successfully updated")
     return render_template('hospital_dashboard.html', hsp_id = hsp_id)
 
 @app.route('/patientRecords', methods=["GET", "POST"])
@@ -150,11 +146,38 @@ def patientRecords():
 @app.route("/patientRecordsLogData", methods=["GET", "POST"])
 def patientRecordsLogData():
     p_id = request.form.get('aadhar')
-    print(p_id)
     query = "select * from patient_records_accessed_log_data where p_id = '{}'".format(p_id)
     curr.execute(query)
     records = curr.fetchall()
     return render_template('patient_records_logs.html', records = records)
+
+@app.route('/approveUser', methods=["GET", "POST"])
+def approveUser():
+    name = request.form.get('name')
+    aadhar = request.form.get('aadhar')
+    mobile = request.form.get('mobile')
+    type = request.form.get('type')
+    passwd = request.form.get('passwd')
+    action = request.form.get('action')
+    query = "select name, aadhar, mobile, user_type from acl_list where aadhar = {}".format(aadhar)
+    curr.execute(query)
+    details = curr.fetchall()
+    if len(details)>0 and action == 'approve':
+        return "User already exists with the details like this: " + ", ".join([str(row) for row in details])
+    elif action == 'reject':
+        query = "delete from registration_approval_data where aadhar = {}".format(aadhar)
+        curr.execute(query)
+        conn.commit()
+        print("Rejection of this user is successful")
+        return "Rejected Successfully"
+    else:
+        query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, type)
+        curr.execute(query)
+        conn.commit()
+        query = "delete from registration_approval_data where aadhar = '{}'".format(aadhar)
+        curr.execute(query)
+        conn.commit()
+        return "Approved Successfully"
 
 if __name__ == "__main__":
     app.run(debug = True)

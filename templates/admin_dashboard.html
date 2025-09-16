@@ -17,6 +17,44 @@
                     <th>Aadhar</th>
                     <th>Mobile Number</th>
                     <th>User Type</th>
+                    <th>Request timestamp</th>
+                    <th>Take Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in approval_data %}
+                <tr>
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[3] }}</td>
+                    <td>{{ record[4] }}</td>
+                    <td>
+                        <form action="/approveUser" method="post">
+                            <input type="hidden" name="name" value="{{record[0]}}">
+                            <input type="hidden" name="aadhar" value="{{record[1]}}">
+                            <input type="hidden" name="mobile" value="{{record[2]}}">
+                            <input type="hidden" name="type" value="{{record[3]}}">
+                            <input type="hidden" name="passwd" value="{{record[5]}}">
+                            <button type="submit" name="action" value="approve">Approve</button>
+                            <button type="submit" name="action" value="reject">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2>Users data</h2>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Aadhar</th>
+                    <th>Mobile Number</th>
+                    <th>User Type</th>
                 </tr>
             </thead>
             <tbody>
