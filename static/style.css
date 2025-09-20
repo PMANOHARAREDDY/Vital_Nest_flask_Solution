@@ -5,19 +5,77 @@
     margin: auto;
 }
 
-.h2{
+.VitalNest_heading{
     font-family: 'Times New Roman', Times, serif;
-    color: black;
+    color: white;
+    font-size: 40px;
 }
 
-body {
-    background-color: rgb(145, 213, 217);
+.login-background {
+    background-image: url(https://media.istockphoto.com/id/2099357117/vector/heart-pulse-and-heartbeat-heartbeat-lone-cardiogram-beautiful-healthcare-medical-background.jpg?s=612x612&w=0&k=20&c=5agokqkO2Ls-JGCXC5eYl8mH_EO1ZnihZc-pEYtVBOI=);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    text-items: center;
+}
+
+#register_btn{
+    font-size: 4vmin;
+    display: block;
+    text-align: center;
+    color:white;
+}
+
+.box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    width: 400px;
+    border-radius: 1rem;
+    background-color: rgb(182, 232, 255);
+
+    font-size:4vmin;
+}
+
+.login_heading{
+    display: flex;
+    justify-content: center;
+    padding-bottom : 50px ;
+}
+
+
+.login_label{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    bottom : 30px;
+    padding-bottom: 30px; 
+    gap: 1vmin;
+} 
+
+.login_label input {
+    width : 300px;
+    height : 30px;
+}
+ 
+.login_btn button{
+    font-size : 20px;
+    border-radius: 1rem;
+    width : 100px;
+}
+
+.login_btn{
+    position: relative;
+    bottom: 15px;
+    text-align: center;
 }
 
 .image-row {
   display: flex;
-  justify-content: center;   /* center them horizontally */
-  gap: 100px;                 /* space between images */
+  justify-content: center;   
+  gap: 100px;                 
   margin-top: 50px;
   flex-wrap: wrap;
 }
@@ -28,16 +86,16 @@ body {
   border-radius: 15px;
   border: 0.5px solid black;
   object-fit: cover;
-  transition: transform 0.3s ease; /* smooth hover effect */
+  transition: transform 0.3s ease; 
 }
 
 .image-row img:hover {
-  transform: scale(1.05);    /* zoom slightly on hover */
+  transform: scale(1.05);    
 }
 
 .top-bar {
     display: flex;
-    justify-content: flex-end; /* move content to right */
+    justify-content: flex-end; 
     align-items: center;
     padding: 15px 30px;
 }
@@ -59,24 +117,6 @@ body {
     align-items: center;
     padding: 20px 10px;
 }
-
-.form{
-    display: flex;
-}
-
-.box{
-    width : 300px;
-    height : 200px;
-    background-color: rgb(182, 232, 255);
-    padding: 50px;
-    margin : 100px 450px;
-}
-
-.container{
-    display: flex;
-    justify-content: center;
-}
-
 
 
 .s_header{

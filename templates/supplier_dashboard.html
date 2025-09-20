@@ -7,6 +7,38 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Supplier DashBoard - VitalNest</h1>
+    <header class = "s_header">
+        <!-- <div> -->
+            <h1>Supplier Dashboard</h1>
+        <!-- </div> -->
+        <!-- <div> -->
+            <input id = "search" placeholder="search supplier"/>
+            <button>add supplier</button>
+        <!-- </div> -->
+    </header>
+
+    <main>
+        <section>
+            <div>total suppliers</div>
+            <div>pending</div>
+            <div>active</div>
+        </section>
+        <br>    
+        <table>
+            <thead>
+                <tr>
+                    <b><td>name</td></b>
+                    <b><td>number</td></b>
+                    <b><td>location</td></b>
+                    <b><td>status</td></b>
+                    <b><td>action</td></b>   
+                </tr>
+            </thead>
+            <tbody>
+                <!--rows are injected here-->
+            </tbody>
+        </table>
+    </main>
+
 </body>
 </html>
