@@ -5,7 +5,7 @@ import mysql.connector as sql
 conn = sql.connect(
     host='127.0.0.1',
     user='root',
-    password='Pavitra@01',
+    password='Sakshi@1922',
     database='vital_nest_flask_solution',
     port=3306,
     auth_plugin='mysql_native_password',
@@ -43,7 +43,7 @@ def login():
             curr.execute(query)
             conn.commit()
             user_type = res[1]
-            if user_type=="hospital":
+            if user_type=="Hospital":
                 query = "select hsp_id from hsp_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
                 hsp_id = curr.fetchone()[0] 
