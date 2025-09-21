@@ -13,29 +13,29 @@
     <h2 class="register_card_text_design">Welcome to Vital Nest - your health is our concern</h2>
     <div class="register_card_design d-flex flex-column flex-row justify-content-center align-items-center container mt-5">
     <form  action="/registerToDB" method="post">
-        <label for="aadhar"> Aadhar Id </label>
-        <input type="text" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required>
+        <label for="aadhar" class="register_card_form_design"> Aadhar Id </label>
+        <input  type="text" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required>
         <br>
         <br>
-        <label for="uname"> User Name </label>
+        <label for="uname" class="register_card_form_design"> User Name </label>
         <input type="text" name="uname" maxlength="25">
         <br>
         <br>
-        <label for="mobile"> Mobile Number </label>
+        <label for="mobile" class="register_card_form_design"> Mobile Number </label>
         <input type="text" name="mobile" pattern="\d{10}" maxlength="10" minlength="10" required>
         <br>
         <br>
-        <label for="passwd"> passwd </label>
+        <label for="passwd" class="register_card_form_design"> passwd </label>
         <input type="password" name="passwd" maxlength="15" minlength="8" required>
         <br>
         <br>
-        <label for="utype"> Type of user</label>
+        <label for="utype" class="register_card_form_design"> Type of user</label>
         <select name="utype" required>
             <option value="" disabled selected> Select the kind of user</option>
-            <option value = "supplier">Supplier</option>
+            <option value = "Supplier">Supplier</option>
             <option value = "Hospital">Hospital</option>
-            <option value = "industry">Industry</option>
-            <option value="rep">Representative</option>
+            <option value = "Industry">Industry</option>
+            <option value="Rep">Representative</option>
         </select>
         <br>
         <br>

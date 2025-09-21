@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VitalNest</title>
+    <link rel = "stylesheet" href = "/static/style.css">
 </head>
-<body>
-    <h1>Vital Nest Admin Dashboard - {{admin_id}}</h1>
+<body  style="background-color:rgb(182, 232, 255);">
+    <h1 class="admin_user_approval_card_heading">Vital Nest Admin Dashboard - {{admin_id}}</h1>
     <hr>
     <div>
-        <h2>Users data</h2>
-        <table border="1" cellpadding="5" cellspacing="0">
+        <h2 style="text-align: center;">Users data</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -36,8 +37,8 @@
                             <input type="hidden" name="mobile" value="{{record[2]}}">
                             <input type="hidden" name="type" value="{{record[3]}}">
                             <input type="hidden" name="passwd" value="{{record[5]}}">
-                            <button type="submit" name="action" value="approve">Approve</button>
-                            <button type="submit" name="action" value="reject">Reject</button>
+                            <button class="admin_user_approval_card_accept_button_design" type="submit" name="action" value="approve">Approve</button>
+                            <button class="admin_user_approval_card_reject_button_design" type="submit" name="action" value="reject">Reject</button>
                         </form>
                     </td>
                 </tr>
@@ -46,9 +47,21 @@
         </table>
     </div>
     <hr>
+        <div >
+        <h2 style="text-align: center;">Search for Patient Records log Data</h2>
+        <div class="admin_patient_record_card_design">
+        <form action="/patientRecordsLogData" method="post">
+            <label for="aadhar">Patient ID (Aadhar):</label><br>
+            <input type="text" id="p_id" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+            
+            <input class="admin_patient_record_button_design" type="submit" value="Submit">
+        </form>
+        </div>
+    </div>
+    <hr>
     <div>
-        <h2>Users data</h2>
-        <table border="1" cellpadding="5" cellspacing="0">
+        <h2 style="text-align: center;">Users data</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -70,29 +83,10 @@
         </table>
     </div>
     <hr>
+    
     <div>
-        <h2>Log Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Aadhar</th>
-                    <th>Log Time Stamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for log in logs %}
-                <tr>
-                    <td>{{ log[0] }}</td>
-                    <td>{{ log[1] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <hr>
-    <div>
-        <h2>Inventory Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0">
+        <h2 style="text-align: center;">Inventory Data</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
             <thead>
                 <tr>
                     <th>Supplier ID</th>
@@ -123,8 +117,8 @@
     </div>
     <hr>
     <div>
-        <h2>Data Records</h2>
-        <table border="1" cellpadding="5" cellspacing="0">
+        <h2 style="text-align: center;">Data Records</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
             <thead>
                 <tr>
                     <th>HSP ID</th>
@@ -143,14 +137,26 @@
             </tbody>
         </table>
     </div>
+    <hr>
     <div>
-        <h2>Search for Patient Records log Data</h2>
-        <form action="/patientRecordsLogData" method="post">
-            <label for="aadhar">Patient ID (Aadhar):</label><br>
-            <input type="text" id="p_id" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-            
-            <input type="submit" value="Submit">
-        </form>
+        <h2>Log Data</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin:center;">
+            <thead>
+                <tr>
+                    <th>Aadhar</th>
+                    <th>Log Time Stamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log[0] }}</td>
+                    <td>{{ log[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+
 </body>
 </html>
