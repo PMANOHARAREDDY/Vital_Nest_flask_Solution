@@ -55,17 +55,55 @@
         
         <input type="hidden" name="ind_id" value="{{ind_id}}">
 
-        <label>Tablet Name:</label><br>
+        <label style="font-size: 20px;">Tablet Name:</label><br>
         <input type="text" name="med_name" required><br><br>
         
-        <label>Uses:</label><br>
+        <label style="font-size: 20px;">Uses:</label><br>
         <input type="text" name="uses"><br><br>
 
-        <label>Side Effects:</label><br>
+        <label style="font-size: 20px;">Side Effects:</label><br>
         <input type="text" name="side_effects"><br><br>
         
         <input type="submit" value="Submit" class="industry_dashboard_add_medicine_button">
     </form>
     </div>
+    <div>
+        <h2 style="text-align: center;">Request Data</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+            <thead>
+                <tr>
+                    <th>Supplier ID</th>
+                    <th>Quantity</th>
+                    <th>Industry ID</th>
+                    <th>Medicine Name</th>
+                    <th>Request Timestamp</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in request_data %}
+                <tr>    
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[3] }}</td>
+                    <td>{{ record[4] }}</td>
+                    <td>
+                        <form action="/sendInventory" method="post">
+                            <input type="hidden" name="supplier_id" value="{{record[0]}}">
+                            <input type="hidden" name="quantity" value="{{record[1]}}">
+                            <input type="hidden" name="ind_id" value="{{record[2]}}">
+                            <input type="hidden" name="med_name" value="{{record[3]}}">
+                            <button type="submit" name="action" value="approve">Approve</button>
+                            <button type="submit" name="action" value="reject">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
 </body>
 </html>
