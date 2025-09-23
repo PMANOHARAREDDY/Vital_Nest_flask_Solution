@@ -54,7 +54,7 @@ def login():
                 query = "select ind_id from ind_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
                 ind_id = curr.fetchone()[0]
-                query = "select medicine_name, uses, side_effects from medicine_data where ind_id = '{}'".format(ind_id)
+                query = "select * from medicine_data where ind_id = '{}'".format(ind_id)
                 curr.execute(query)
                 medicines = curr.fetchall()
                 return render_template('industry_dashboard.html', ind_id = ind_id, medicines = medicines)
@@ -178,6 +178,34 @@ def approveUser():
         curr.execute(query)
         conn.commit()
         return "Approved Successfully"
+
+@app.route('/updateMedicineQuantity', methods=["GET", "POST"])
+def updateQuantity():
+    updated_quantity = int(request.form.get('quant')) + int(request.form.get('quant_update'))
+    med_name = request.form.get('name')
+    print(updated_quantity)
+    query = "update medicine_data set quantity = {} where medicine_name = '{}'".format(updated_quantity, med_name)
+    curr.execute(query)
+    conn.commit()
+    return "Update Successfull"
+
+@app.route('/removeMedicine', methods=["GET", "POST"])
+def removeMedicine():
+    med_name = request.form.get('name')
+    query = "select * from medicine_data where medicine_name = '{}'".format(med_name)
+    curr.execute(query)
+    data = curr.fetchall()
+    ind_id = data[0][0]
+    med_name = data[0][1]
+    uses = data[0][2]
+    side_effects = data[0][3]
+    query = "insert into unregistered_medicine_data(ind_id, medicine_name, uses, side_effects) values('{}','{}','{}','{}')".format(ind_id, med_name, uses, side_effects)
+    curr.execute(query)
+    conn.commit()
+    query = "delete from medicine_data where medicine_name = '{}'".format(med_name)
+    curr.execute(query)
+    conn.commit()
+    return "Medicine Unregistering Successful"
 
 if __name__ == "__main__":
     app.run(debug = True)
