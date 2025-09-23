@@ -17,14 +17,33 @@
                     <th>Name</th>
                     <th>Uses</th>
                     <th>Side Effects</th>
+                    <th>Current Quantity</th>
+                    <td>Increment Quantity</th>
+                    <td>Remove Medicine</td>
                 </tr>
             </thead>
             <tbody style="background-color: white;">
                 {% for medicine in medicines %}
                 <tr style="padding: 10px; text-align: center;">
-                    <td>{{ medicine[0] }}</td>
                     <td>{{ medicine[1] }}</td>
                     <td>{{ medicine[2] }}</td>
+                    <td>{{ medicine[3] }}</td>
+                    <td>{{ medicine[4] }}</td>
+                    <td>
+                        <form action="/updateMedicineQuantity" method="post">
+                            <input type="hidden" name="name" value="{{medicine[1]}}">
+                            <input type="hidden" name="quant" value="{{medicine[4]}}">
+                            <input type="number" min="100" max="5000" name="quant_update">
+                            <button type="submit" name="action" value="update">Update</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/removeMedicine" method="post">
+                            <input type="hidden" name="name" value="{{medicine[1]}}">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
