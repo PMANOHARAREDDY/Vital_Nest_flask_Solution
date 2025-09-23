@@ -49,7 +49,13 @@ def login():
                 hsp_id = curr.fetchone()[0] 
                 return render_template('hospital_dashboard.html', hsp_id = hsp_id)
             elif user_type=="distributor":
-                return render_template('supplier_dashboard.html')
+                query = "select * from medicine_data"
+                curr.execute(query)
+                data = curr.fetchall()
+                query = "select * from inventory_data_industry_to_supplier where supplier_id = {}".format(aadhar)
+                curr.execute(query)
+                inventory_data = curr.fetchall()
+                return render_template('supplier_dashboard.html', data = data, manager_id = aadhar, inventory_data = inventory_data)
             elif user_type=="industry":
                 query = "select ind_id from ind_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
@@ -57,7 +63,10 @@ def login():
                 query = "select * from medicine_data where ind_id = '{}'".format(ind_id)
                 curr.execute(query)
                 medicines = curr.fetchall()
-                return render_template('industry_dashboard.html', ind_id = ind_id, medicines = medicines)
+                query = "select * from inventory_request_to_industry_by_supplier where ind_id = '{}'".format(ind_id)
+                curr.execute(query)
+                request_data = curr.fetchall()
+                return render_template('industry_dashboard.html', ind_id = ind_id, medicines = medicines, request_data = request_data)
             elif user_type=="Rep":
                 return render_template("representative_dashboard.html")
             else:
@@ -206,6 +215,37 @@ def removeMedicine():
     curr.execute(query)
     conn.commit()
     return "Medicine Unregistering Successful"
+
+@app.route('/requestInventory', methods=["GET", "POST"])
+def requestInventory():
+    supplier_id = request.form.get('supplier_id')
+    quantity = request.form.get('quantity')
+    ind_id = request.form.get('ind_id')
+    med_name = request.form.get('med_name')
+    query = "insert into inventory_request_to_industry_by_supplier(supplier_id, quantity, ind_id, med_name) values('{}', {}, '{}', '{}')".format(supplier_id, quantity, ind_id, med_name)
+    curr.execute(query)
+    conn.commit()
+    return "Inventory Request fetch is successful"
+
+@app.route('/sendInventory', methods=["GET", "POST"])
+def sendInventory():
+    supplier_id = request.form.get('supplier_id')
+    ind_id = request.form.get('ind_id')
+    med_name = request.form.get('med_name')
+    quantity = request.form.get('quantity')
+    action = request.form.get('action')
+    if(action == 'approve'):
+        query = "update medicine_data set quantity = quantity - {} where ind_id = '{}' and medicine_name = '{}'".format(quantity, ind_id, med_name)
+        curr.execute(query)
+        conn.commit()
+        query = "insert into inventory_data_industry_to_supplier (supplier_id, quantity, ind_id, med_name) values({}, {}, '{}', '{}')".format(supplier_id, quantity, ind_id, med_name)
+        curr.execute(query)
+        conn.commit()
+    else:
+        query = "delete from inventory_request_to_industry_by_supplier where supplier_id = '{}' and med_name = '{}'".format(supplier_id, med_name)
+        curr.execute(query)
+        conn.commit()
+    return "Send Inventory data is Successful"
 
 if __name__ == "__main__":
     app.run(debug = True)

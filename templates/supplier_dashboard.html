@@ -7,38 +7,65 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <header class = "s_header">
-        <!-- <div> -->
-            <h1>Supplier Dashboard</h1>
-        <!-- </div> -->
-        <!-- <div> -->
-            <input id = "search" placeholder="search supplier"/>
-            <button>add supplier</button>
-        <!-- </div> -->
-    </header>
-
-    <main>
-        <section>
-            <div>total suppliers</div>
-            <div>pending</div>
-            <div>active</div>
-        </section>
-        <br>    
-        <table>
+    <h1>Supplier dashBoard - {{manager_id}}</h1>
+    <div>
+        <h2 style="text-align: center;">Medicinal Data</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
             <thead>
                 <tr>
-                    <b><td>name</td></b>
-                    <b><td>number</td></b>
-                    <b><td>location</td></b>
-                    <b><td>status</td></b>
-                    <b><td>action</td></b>   
+                    <th>Industry ID</th>
+                    <th>Medicine Name</th>
+                    <th>Uses</th>
+                    <th>Side Effects</th>
+                    <th>Quantity</th>
+                    <th>Request Inventory</th>
                 </tr>
             </thead>
             <tbody>
-                <!--rows are injected here-->
+                {% for record in data %}
+                <tr>    
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[3] }}</td>
+                    <td>{{ record[4] }}</td>
+                    <td>
+                        <form action="/requestInventory" method="post">
+                            <input type="hidden" name="supplier_id" value="{{manager_id}}">
+                            <input type="hidden" name="ind_id" value="{{record[0]}}">
+                            <input type="hidden" name="med_name" value="{{record[1]}}">
+                            <input type="number" min="100" max="5000" name="quantity">
+                            <button type="submit">Request</button>
+                        </form>
+                    </td>>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
-    </main>
+    </div>
 
+    <div>
+        <h2 style="text-align: center;">Inventory Data</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+            <thead>
+                <tr>
+                    <th>Industry ID</th>
+                    <th>Quantity</th>
+                    <th>Medicine Name</th>
+                    <th>Supplied Time-Stamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in inventory_data %}
+                <tr>    
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[3] }}</td>
+                    <td>{{ record[4] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
