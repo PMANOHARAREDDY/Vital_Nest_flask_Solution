@@ -6,12 +6,12 @@
     <title>VitalNest</title>
     <link rel = "stylesheet" href = "/static/style.css">
 </head>
-<body  style="background-color:rgb(182, 232, 255);">
+<body  style="background-color:#ebf9fa;">
     <h1 class="admin_user_approval_card_heading">Vital Nest Admin Dashboard - {{admin_id}}</h1>
     <hr>
     <div>
         <h2 style="text-align: center;">Users data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -22,7 +22,7 @@
                     <th>Take Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for record in approval_data %}
                 <tr>
                     <td>{{ record[0] }}</td>
@@ -61,7 +61,7 @@
     <hr>
     <div>
         <h2 style="text-align: center;">Users data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255); ">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -70,7 +70,7 @@
                     <th>User Type</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for user in users %}
                 <tr>
                     <td>{{ user[0] }}</td>
@@ -86,7 +86,7 @@
     
     <div>
         <h2 style="text-align: center;">Inventory Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
                     <th>Supplier ID</th>
@@ -99,7 +99,7 @@
                     <th>IND ID</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for inventory in supply %}
                 <tr>
                     <td>{{ inventory[0] }}</td>
@@ -118,7 +118,7 @@
     <hr>
     <div>
         <h2 style="text-align: center;">Data Records</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
                     <th>HSP ID</th>
@@ -126,7 +126,7 @@
                     <th>IND ID</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for record in hsp_data %}
                 <tr>
                     <td>{{ record[0] }}</td>
@@ -140,14 +140,14 @@
     <hr>
     <div>
         <h2>Log Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin:center;">
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin:center; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
                     <th>Aadhar</th>
                     <th>Log Time Stamp</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for log in logs %}
                 <tr>
                     <td>{{ log[0] }}</td>
