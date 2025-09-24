@@ -18,13 +18,13 @@
                     <th>Uses</th>
                     <th>Side Effects</th>
                     <th>Current Quantity</th>
-                    <td>Increment Quantity</th>
+                    <th>Increment Quantity</th>
                     <td>Remove Medicine</td>
                 </tr>
             </thead>
             <tbody style="background-color: white;">
                 {% for medicine in medicines %}
-                <tr style="padding: 10px; text-align: center;">
+                <tr style="padding: 10px; text-align: center; font-size: 22px; font-weight: 400;">
                     <td>{{ medicine[1] }}</td>
                     <td>{{ medicine[2] }}</td>
                     <td>{{ medicine[3] }}</td>
@@ -34,13 +34,13 @@
                             <input type="hidden" name="name" value="{{medicine[1]}}">
                             <input type="hidden" name="quant" value="{{medicine[4]}}">
                             <input type="number" min="100" max="5000" name="quant_update">
-                            <button type="submit" name="action" value="update">Update</button>
+                            <button type="submit" name="action" value="update" class="industry_dashboard_add_medicine_update_button ">Update</button>
                         </form>
                     </td>
                     <td>
                         <form action="/removeMedicine" method="post">
                             <input type="hidden" name="name" value="{{medicine[1]}}">
-                            <button type="submit">Remove</button>
+                            <button type="submit" class="industry_dashboard_add_medicine_remove_button">Remove</button>
                         </form>
                     </td>
                     </td>
@@ -68,10 +68,10 @@
     </form>
     </div>
     <div>
-        <h2 style="text-align: center;">Request Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <h2 class="industry_dashboard_sub_heading" >Request Data</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: 25px;">
             <thead>
-                <tr>
+                <tr class="industry_dashboard_add_medicine_table">
                     <th>Supplier ID</th>
                     <th>Quantity</th>
                     <th>Industry ID</th>
@@ -80,7 +80,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for record in request_data %}
                 <tr>    
                     <td>{{ record[0] }}</td>
@@ -94,8 +94,10 @@
                             <input type="hidden" name="quantity" value="{{record[1]}}">
                             <input type="hidden" name="ind_id" value="{{record[2]}}">
                             <input type="hidden" name="med_name" value="{{record[3]}}">
-                            <button type="submit" name="action" value="approve">Approve</button>
-                            <button type="submit" name="action" value="reject">Reject</button>
+                            <button type="submit" name="action" value="approve" class="admin_user_approval_card_accept_button_design" style="border-radius: 5px;  font-size: 18px; 
+    font-weight: 400;">Approve</button>
+                            <button type="submit" name="action" value="reject" class="admin_user_approval_card_reject_button_design" style="border-radius: 5px;  font-size: 18px; 
+    font-weight: 400;">Reject</button>
                         </form>
                     </td>
                 </tr>
