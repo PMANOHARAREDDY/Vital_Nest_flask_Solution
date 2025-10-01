@@ -1,0 +1,12 @@
+- [x] Add routes in app.py for /viewPatientBills, /createCrowdfundingDemand, /viewCrowdfundingDemands, /payCrowdfunding
+- [x] Update hospital_dashboard.html to include forms for viewing patient bills, creating crowdfunding demand, viewing demands, and paying
+- [x] Remove pay form from hospital dashboard
+- [x] Create payer_dashboard.html with view demands and pay forms
+- [x] Add payer user type handling in login
+- [x] Add payer option to register.html
+- [x] Modify registerToDB to directly insert payers into acl_list
+- [x] Update viewCrowdfundingDemands to show amount received
+- [x] Update crowdfunding_demands.html to display amount received
+- [x] Test the new functionality
+- [x] Modify /sendInventoryToHospital to insert data into medicine_data_for_patients
+- [x] Modify /billPatient to decrease quantity in medicine_data_for_patients

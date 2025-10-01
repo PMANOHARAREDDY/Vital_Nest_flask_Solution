@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crowdfunding Demands</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Crowdfunding Demands</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Patient ID</th>
+                <th>Total Demand</th>
+                <th>Required Donation</th>
+                <th>Amount Received</th>
+                <th>Date of Register</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for demand in demands %}
+            <tr>
+                <td>{{ demand[0] }}</td>
+                <td>{{ demand[1] }}</td>
+                <td>{{ demand[2] }}</td>
+                <td>{{ demand[4] }}</td>
+                <td>{{ demand[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/login">Back to Dashboard</a>
+</body>
+</html>

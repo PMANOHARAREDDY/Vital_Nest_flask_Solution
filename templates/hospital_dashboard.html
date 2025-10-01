@@ -20,23 +20,22 @@
     <hr>
     <div>
         <h2>Patient Billing</h2>
-        <form action="/billPatient" method="post" id="billForm">
+        <form action="/billPatient" method="post">
             <input type="hidden" name="hsp_id" value="{{hsp_id}}">
 
             <label for="aadhar">Aadhar ID :</label>
             <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-    
-            <div id="items-container">
-                <div class="item-row">
-                    <label>Item :</label>
-                    <input type="text" name="item[]">
-                    <label>Quantity :</label>
-                    <input type="number" name="quantity[]" min="1" max="30">
-                    <button type="button" onclick="removeItem(this)">Remove</button>
-                    <br><br>
-                </div>
-            </div>
-            <button type="button" onclick="addItem()">Add Item</button><br><br>
+
+            <label for="item">Item :</label>
+            <select id="item" name="item" required>
+                {% for med in patient_meds %}
+                <option value="{{ med[0] }}">{{ med[0] }} (Qty: {{ med[1] }})</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="quantity">Quantity :</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="30" required><br><br>
+
             <input type="submit" value="Submit">
         </form>
     </div>
@@ -70,61 +69,72 @@
             <input type="submit" value="Submit">
         </form>
     </div>
-
-        <div>
+    <div>
         <h2 style="text-align: center;">Medicinal Data</h2>
         <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
             <thead>
                 <tr>
                     <th>Supplier ID</th>
                     <th>Medicine Name</th>
-                    <th>Uses</th>
-                    <th>Side Effects</th>
                     <th>Quantity</th>
+                    <th>Industry ID</th>
                     <th>Request Inventory</th>
                 </tr>
             </thead>
             <tbody>
                 {% for record in data %}
-                <tr>    
+                <tr>
                     <td>{{ record[0] }}</td>
                     <td>{{ record[1] }}</td>
                     <td>{{ record[2] }}</td>
                     <td>{{ record[3] }}</td>
-                    <td>{{ record[4] }}</td>
                     <td>
-                        <form action="/" method="post">
-                            <input type="hidden" name="supplier_id" value="{{manager_id}}">
-                            <input type="hidden" name="ind_id" value="{{record[0]}}">
+                        <form action="/requestInventoryByHospital" method="post">
+                            <input type="hidden" name="supplier_id" value="{{record[0]}}">
+                            <input type="hidden" name="ind_id" value="{{record[3]}}">
                             <input type="hidden" name="med_name" value="{{record[1]}}">
-                            <input type="number" min="100" max="5000" name="quantity">
+                            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+                            <input type="number" min="100" max="5000" name="quant">
                             <button type="submit">Request</button>
                         </form>
-                    </td>>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    <hr>
+    <div>
+        <h2>View Patient Bills</h2>
+        <form action="/viewPatientBills" method="post">
+            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+            <label for="p_id">Patient ID (Aadhar):</label><br>
+            <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+            <input type="submit" value="View Bills">
+        </form>
+    </div>
+    <hr>
+    <div>
+        <h2>Create Crowdfunding Demand</h2>
+        <form action="/createCrowdfundingDemand" method="post">
+            <label for="p_id">Patient ID (Aadhar):</label><br>
+            <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+            <label for="total_demand">Total Demand:</label><br>
+            <input type="number" id="total_demand" name="total_demand" min="1" required><br><br>
+            <label for="required_donation">Required Donation:</label><br>
+            <input type="number" id="required_donation" name="required_donation" min="1" required><br><br>
+            <input type="submit" value="Create Demand">
+        </form>
+    </div>
+    <hr>
+    <div>
+        <h2>View Crowdfunding Demands</h2>
+        <form action="/viewCrowdfundingDemands" method="get">
+            <input type="submit" value="View Demands">
+        </form>
+    </div>
 
-    <script>
-        function addItem() {
-            var container = document.getElementById('items-container');
-            var row = document.createElement('div');
-            row.className = 'item-row';
-            row.innerHTML = 
-                '<label>Item :</label>' +
-                '<input type="text" name="item[]">' +
-                '<label>Quantity :</label>' +
-                '<input type="number" name="quantity[]" min="1" max="30">' +
-                '<button type="button" onclick="removeItem(this)">Remove</button><br><br>';
-            container.appendChild(row);
-        }
 
-        function removeItem(btn) {
-            var row = btn.parentNode;
-            row.parentNode.removeChild(row);
-        }
-    </script>
+
 </body>
 </html>
