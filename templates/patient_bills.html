@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Bills</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Patient Bills for Hospital {{hsp_id}}</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Patient ID</th>
+                <th>Date of Purchase</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Hospital ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+            <tr>
+                <td>{{ bill[0] }}</td>
+                <td>{{ bill[1] }}</td>
+                <td>{{ bill[2] }}</td>
+                <td>{{ bill[3] }}</td>
+                <td>{{ bill[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/login">Back to Dashboard</a>
+</body>
+</html>
