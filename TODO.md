@@ -8,3 +8,5 @@
 - [x] Update viewCrowdfundingDemands to show amount received
 - [x] Update crowdfunding_demands.html to display amount received
 - [x] Test the new functionality
+- [x] Modify /sendInventoryToHospital to insert data into medicine_data_for_patients
+- [x] Modify /billPatient to decrease quantity in medicine_data_for_patients

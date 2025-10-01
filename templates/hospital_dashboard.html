@@ -20,23 +20,22 @@
     <hr>
     <div>
         <h2>Patient Billing</h2>
-        <form action="/billPatient" method="post" id="billForm">
+        <form action="/billPatient" method="post">
             <input type="hidden" name="hsp_id" value="{{hsp_id}}">
 
             <label for="aadhar">Aadhar ID :</label>
             <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-    
-            <div id="items-container">
-                <div class="item-row">
-                    <label>Item :</label>
-                    <input type="text" name="item[]">
-                    <label>Quantity :</label>
-                    <input type="number" name="quantity[]" min="1" max="30">
-                    <button type="button" onclick="removeItem(this)">Remove</button>
-                    <br><br>
-                </div>
-            </div>
-            <button type="button" onclick="addItem()">Add Item</button><br><br>
+
+            <label for="item">Item :</label>
+            <select id="item" name="item" required>
+                {% for med in patient_meds %}
+                <option value="{{ med[0] }}">{{ med[0] }} (Qty: {{ med[1] }})</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="quantity">Quantity :</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="30" required><br><br>
+
             <input type="submit" value="Submit">
         </form>
     </div>
@@ -136,24 +135,6 @@
     </div>
 
 
-    <script>
-        function addItem() {
-            var container = document.getElementById('items-container');
-            var row = document.createElement('div');
-            row.className = 'item-row';
-            row.innerHTML = 
-                '<label>Item :</label>' +
-                '<input type="text" name="item[]">' +
-                '<label>Quantity :</label>' +
-                '<input type="number" name="quantity[]" min="1" max="30">' +
-                '<button type="button" onclick="removeItem(this)">Remove</button><br><br>';
-            container.appendChild(row);
-        }
 
-        function removeItem(btn) {
-            var row = btn.parentNode;
-            row.parentNode.removeChild(row);
-        }
-    </script>
 </body>
 </html>

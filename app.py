@@ -46,11 +46,14 @@ def login():
             if user_type=="hospital":
                 query = "select hsp_id from hsp_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
-                hsp_id = curr.fetchone()[0] 
+                hsp_id = curr.fetchone()[0]
                 query = "select supplier_id, medicine_name, quantity, ind_id from medicine_data_replica_for_hospitals where quantity<>0 order by supplier_id, ind_id"
                 curr.execute(query)
                 inven_data = curr.fetchall()
-                return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data)
+                query = "select med_name, quantity from medicine_data_for_patients where hsp_id = '{}' and quantity > 0".format(hsp_id)
+                curr.execute(query)
+                patient_meds = curr.fetchall()
+                return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds)
             elif user_type=="distributor":
                 query = "select * from medicine_data"
                 curr.execute(query)
@@ -142,13 +145,20 @@ def addNewMedicine():
 def billPatient():
     hsp_id = request.form.get('hsp_id')
     aadhar = request.form.get('aadhar')
-    items = request.form.getlist('item[]')
-    quantities = request.form.getlist('quantity[]')
+    item = request.form.get('item')
+    quantity = request.form.get('quantity')
     query = "insert into patient_data (p_id, item, quantity, hsp_id) VALUES (%s, %s, %s, %s)"
-    for item, qty in zip(items, quantities):
-        curr.execute(query, (aadhar, item, int(qty), hsp_id))
+    curr.execute(query, (aadhar, item, int(quantity), hsp_id))
+    update_query = "update medicine_data_for_patients set quantity = quantity - {} where hsp_id = '{}' and med_name = '{}'".format(int(quantity), hsp_id, item)
+    curr.execute(update_query)
     conn.commit()
-    return render_template('hospital_dashboard.html', hsp_id = hsp_id)
+    query = "select supplier_id, medicine_name, quantity, ind_id from medicine_data_replica_for_hospitals where quantity<>0 order by supplier_id, ind_id"
+    curr.execute(query)
+    inven_data = curr.fetchall()
+    query = "select med_name, quantity from medicine_data_for_patients where hsp_id = '{}' and quantity > 0".format(hsp_id)
+    curr.execute(query)
+    patient_meds = curr.fetchall()
+    return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds)
 
 @app.route('/addTreatmentRecord', methods=["GET", "POST"])
 def addTreatmentRecord():
@@ -159,7 +169,13 @@ def addTreatmentRecord():
     query = "insert into treatment_record (p_id, disease_remark, treatment_remark, hsp_id) values('{}','{}','{}','{}')".format(aadhar, disease_remark, treatment_remark, hsp_id)
     curr.execute(query)
     conn.commit()
-    return render_template('hospital_dashboard.html', hsp_id = hsp_id)
+    query = "select supplier_id, medicine_name, quantity, ind_id from medicine_data_replica_for_hospitals where quantity<>0 order by supplier_id, ind_id"
+    curr.execute(query)
+    inven_data = curr.fetchall()
+    query = "select med_name, quantity from medicine_data_for_patients where hsp_id = '{}' and quantity > 0".format(hsp_id)
+    curr.execute(query)
+    patient_meds = curr.fetchall()
+    return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds)
 
 @app.route('/patientRecords', methods=["GET", "POST"])
 def patientRecords():
@@ -299,6 +315,17 @@ def sendInventoryToHospital():
         conn.commit()
         query = "insert into inventory_data_supplier_to_hospital (supplier_id, quantity, hsp_id, med_name) values({}, {}, '{}', '{}')".format(supplier_id, quantity, hsp_id, med_name)
         curr.execute(query)
+        conn.commit()
+        check_query = "select quantity from medicine_data_for_patients where hsp_id = '{}' and med_name = '{}'".format(hsp_id, med_name)
+        curr.execute(check_query)
+        result = curr.fetchone()
+        if result:
+            new_quantity = result[0] + int(quantity)
+            update_query = "update medicine_data_for_patients set quantity = {} where hsp_id = '{}' and med_name = '{}'".format(new_quantity, hsp_id, med_name)
+            curr.execute(update_query)
+        else:
+            insert_query = "insert into medicine_data_for_patients (quantity, hsp_id, med_name) values({}, '{}', '{}')".format(quantity, hsp_id, med_name)
+            curr.execute(insert_query)
         conn.commit()
         query = "delete from inventory_request_to_supplier_by_hospital where hsp_id = '{}' and med_name = '{}'".format(hsp_id, med_name)
         curr.execute(query)
