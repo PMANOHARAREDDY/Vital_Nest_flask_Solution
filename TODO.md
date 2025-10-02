@@ -1,4 +1,0 @@
-- [x] Add import for werkzeug.security in app.py
-- [x] Modify registerToDB route: hash password before storing in DB
-- [x] Modify approveUser route: hash password before storing in DB
-- [x] Modify login route: use check_password_hash to verify password instead of direct comparison

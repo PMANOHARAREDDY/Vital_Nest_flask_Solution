@@ -114,6 +114,7 @@ def registerToDB():
     passwd = request.form.get('passwd')
     utype = request.form.get('utype')
     hashed_passwd = generate_password_hash(passwd)
+    print(len(hashed_passwd))
     if utype == 'payer':
         query = "insert into acl_list (name, aadhar, mobile, passwd, user_type) values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, hashed_passwd, utype)
         curr.execute(query)
