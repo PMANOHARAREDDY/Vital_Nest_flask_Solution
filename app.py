@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 import sys
 import mysql.connector as sql
+from werkzeug.security import generate_password_hash, check_password_hash
 
 conn = sql.connect(
     host='127.0.0.1',
@@ -38,12 +39,12 @@ def login():
         curr.execute(query)
         res = curr.fetchone()
         real_passwd = res[0]
-        if real_passwd == passwd:
+        if check_password_hash(real_passwd, passwd):
             query = "insert into log_table (aadhar) values({})".format(aadhar)
             curr.execute(query)
             conn.commit()
             user_type = res[1]
-            if user_type=="hospital":
+            if user_type=="Hospital":
                 query = "select hsp_id from hsp_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
                 hsp_id = curr.fetchone()[0]
@@ -112,13 +113,15 @@ def registerToDB():
     mobile = request.form.get('mobile')
     passwd = request.form.get('passwd')
     utype = request.form.get('utype')
+    hashed_passwd = generate_password_hash(passwd)
+    print(len(hashed_passwd))
     if utype == 'payer':
-        query = "insert into acl_list (name, aadhar, mobile, passwd, user_type) values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, utype)
+        query = "insert into acl_list (name, aadhar, mobile, passwd, user_type) values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, hashed_passwd, utype)
         curr.execute(query)
         conn.commit()
         return redirect(url_for('home'))
     else:
-        query = "insert into registration_approval_data (name, aadhar, mobile, passwd, user_type) values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, utype)
+        query = "insert into registration_approval_data (name, aadhar, mobile, passwd, user_type) values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, hashed_passwd, utype)
         curr.execute(query)
         conn.commit()
         return redirect(url_for('home'))
@@ -217,7 +220,8 @@ def approveUser():
         print("Rejection of this user is successful")
         return "Rejected Successfully"
     else:
-        query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, type)
+        hashed_passwd = generate_password_hash(passwd)
+        query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, hashed_passwd, type)
         curr.execute(query)
         conn.commit()
         query = "delete from registration_approval_data where aadhar = '{}'".format(aadhar)
