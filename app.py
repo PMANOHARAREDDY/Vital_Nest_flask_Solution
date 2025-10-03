@@ -55,7 +55,7 @@ def login():
                 curr.execute(query)
                 patient_meds = curr.fetchall()
                 return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds)
-            elif user_type=="distributor":
+            elif user_type=="supplier":
                 query = "select * from medicine_data"
                 curr.execute(query)
                 data = curr.fetchall()
@@ -77,7 +77,7 @@ def login():
                 curr.execute(query)
                 request_data = curr.fetchall()
                 return render_template('industry_dashboard.html', ind_id = ind_id, medicines = medicines, request_data = request_data)
-            elif user_type=="Rep":
+            elif user_type=="rep":
                 return render_template("representative_dashboard.html")
             elif user_type=="payer":
                 return render_template("payer_dashboard.html", aadhar=aadhar)
@@ -135,7 +135,7 @@ def addNewMedicine():
     query = "insert into medicine_data (ind_id, medicine_name, uses, side_effects) values('{}', '{}', '{}', '{}')".format(ind_id, med_name, uses, side_effects)
     curr.execute(query)
     conn.commit()
-    query = "select aadhar from acl_list where user_type = 'distributor'"
+    query = "select aadhar from acl_list where user_type = 'supplier'"
     curr.execute(query)
     sup_ids = curr.fetchall()
     for i in sup_ids:
@@ -220,8 +220,7 @@ def approveUser():
         print("Rejection of this user is successful")
         return "Rejected Successfully"
     else:
-        hashed_passwd = generate_password_hash(passwd)
-        query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, hashed_passwd, type)
+        query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, type)
         curr.execute(query)
         conn.commit()
         query = "delete from registration_approval_data where aadhar = '{}'".format(aadhar)
