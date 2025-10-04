@@ -23,7 +23,7 @@
             </thead>
             <tbody style="background-color: white;">
                 {% for record in request_data %}
-                <tr>    
+                <tr style="padding: 10px; text-align: center; font-size: 22px; font-weight: 400;">    
                     <td>{{ record[0] }}</td>
                     <td>{{ record[1] }}</td>
                     <td>{{ record[2] }}</td>
@@ -35,10 +35,8 @@
                             <input type="hidden" name="quantity" value="{{record[1]}}">
                             <input type="hidden" name="hsp_id" value="{{record[5]}}">
                             <input type="hidden" name="med_name" value="{{record[3]}}">
-                            <button type="submit" name="action" value="approve" class="admin_user_approval_card_accept_button_design" style="border-radius: 5px;  font-size: 18px; 
-    font-weight: 400;">Approve</button>
-                            <button type="submit" name="action" value="reject" class="admin_user_approval_card_reject_button_design" style="border-radius: 5px;  font-size: 18px; 
-    font-weight: 400;">Reject</button>
+                            <button type="submit" name="action" value="approve" class="supplier_dashboard_approve_button" >Approve</button>
+                            <button type="submit" name="action" value="reject" class="supplier_dashboard_reject_button">Reject</button>
                         </form>
                     </td>
                 </tr>
@@ -47,10 +45,10 @@
         </table>
     </div>
     <div>
-        <h2 style="text-align: center;">Medicinal Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <h2 class="industry_dashboard_sub_heading">Medicinal Data</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin:25px;">
             <thead>
-                <tr>
+                <tr class="industry_dashboard_add_medicine_table">
                     <th>Industry ID</th>
                     <th>Medicine Name</th>
                     <th>Uses</th>
@@ -61,7 +59,7 @@
             </thead>
             <tbody>
                 {% for record in data %}
-                <tr>    
+                <tr style="padding: 10px; text-align: center; font-size: 22px; font-weight: 400;">    
                     <td>{{ record[0] }}</td>
                     <td>{{ record[1] }}</td>
                     <td>{{ record[2] }}</td>
@@ -73,7 +71,7 @@
                             <input type="hidden" name="ind_id" value="{{record[0]}}">
                             <input type="hidden" name="med_name" value="{{record[1]}}">
                             <input type="number" min="100" max="5000" name="quantity">
-                            <button type="submit">Request</button>
+                            <button  class="supplier_dashboard_request_button"  type="submit">Request</button>
                         </form>
                     </td>>
                 </tr>
@@ -83,10 +81,10 @@
     </div>
 
     <div>
-        <h2 style="text-align: center;">Inventory Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <h2 class="industry_dashboard_sub_heading">Inventory Data</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: 25px;">
             <thead>
-                <tr>
+                <tr class="industry_dashboard_add_medicine_table">
                     <th>Industry ID</th>
                     <th>Quantity</th>
                     <th>Medicine Name</th>
@@ -95,7 +93,7 @@
             </thead>
             <tbody>
                 {% for record in inventory_data %}
-                <tr>    
+                <tr style="padding: 10px; text-align: center; font-size: 22px; font-weight: 400;">    
                     <td>{{ record[2] }}</td>
                     <td>{{ record[1] }}</td>
                     <td>{{ record[3] }}</td>

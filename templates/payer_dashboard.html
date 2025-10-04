@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h2 class="view_crowd_funding_main_heading" >Welcome to the Payer Dashboard of Vital Nest</h2>
+    <h2 class="view_crowd_funding_main_heading" style="color:black;">Welcome to the Payer Dashboard of Vital Nest</h2>
     <h3 class="view_crowd_funding_main_heading" style="color: rgb(63, 91, 115); size: 36px; ">Support Patients in Need</h3>
     <hr>
     <div>
         <h2 style="text-align: center;" >View Crowdfunding Demands</h2>
-        <form style="align-content: center; margin-left: 670px; "  action="/viewCrowdfundingDemands" method="get">
+        <div  style="display: flex; justify-content: center; margin-top: 10px;" >
+        <form  action="/viewCrowdfundingDemands" method="get">
             <input type="submit" value="View All Demands" class="view_crowd_funding_button">
         </form>
+        </div>
     </div>
    
     <br>
     <br>
-    <div style="align-content: center; margin:auto;" class="make_donation_card">
+    <div  class="make_donation_card">
         <h2 class="make_donation_sub_heading">Make a Donation</h2>
         <div class="make_donation_card_form">
         <form action="/payCrowdfunding" method="post">

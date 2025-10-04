@@ -330,10 +330,13 @@
 .make_donation_card{
     background-color: rgb(220, 254, 223);
     border-radius: 15px;
-    padding: 20px ;
+    padding: 10px ;
     width: 400px;
     margin: 50px auto; 
     text-align: center;
+    align-content: center;
+    margin:auto;
+    
 }
 
 
@@ -364,4 +367,39 @@
     height: 36px;
     font-size: 18px;
     font-weight: 500;
+}
+
+.supplier_dashboard_request_button{
+    background-color: rgb(86, 24, 141);
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    width: 10vw;
+    height: 36px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.supplier_dashboard_approve_button{
+    background-color: rgb(123, 246, 107);
+    text-align: center;
+    color:rgb(0, 0, 0);
+    border-width: 0px;
+    width: 10vw;
+    height: 36px;
+    border-radius: 5px; 
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.supplier_dashboard_reject_button{
+    background-color: rgb(229, 95, 83);
+    text-align: center;
+    color:rgb(0, 0, 0);
+    border-width: 0px;
+    width: 10vw;
+    height: 36px;
+    border-radius: 5px;  
+    font-size: 18px;
+    font-weight: 400;
 }
