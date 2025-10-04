@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 conn = sql.connect(
     host='127.0.0.1',
     user='root',
-    password='Pavitra@01',
+    password='iphone@2020',
     database='vital_nest_flask_solution',
     port=3306,
     auth_plugin='mysql_native_password',

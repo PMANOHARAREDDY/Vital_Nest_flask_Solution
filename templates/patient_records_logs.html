@@ -6,10 +6,10 @@
     <title>VitalNest</title>
     <link rel = "stylesheet" href = "/static/style.css">
 </head>
-<body>
-    <h1>Patient Health Records was accessed by the following</h1>
+<body style="background-color:#ebf9fa;">
+    <h1 class="admin_user_approval_card_heading">Patient Health Records was accessed by the following</h1>
     <div>
-        <table border="1" cellpadding="5" cellspacing="0">
+        <table border="1" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
                     <th>Hospital ID</th>
@@ -17,7 +17,7 @@
                     <th>Log TimeStamp</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for record in records %}
                 <tr>
                     <td>{{ record[0] }}</td>

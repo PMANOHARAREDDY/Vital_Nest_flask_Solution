@@ -7,25 +7,35 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h2>Welcome to the Payer Dashboard of Vital Nest</h2>
-    <h3>Support Patients in Need</h3>
+    <h2 class="view_crowd_funding_main_heading" >Welcome to the Payer Dashboard of Vital Nest</h2>
+    <h3 class="view_crowd_funding_main_heading" style="color: rgb(63, 91, 115); size: 36px; ">Support Patients in Need</h3>
     <hr>
     <div>
-        <h2>View Crowdfunding Demands</h2>
-        <form action="/viewCrowdfundingDemands" method="get">
-            <input type="submit" value="View All Demands">
+        <h2 style="text-align: center;" >View Crowdfunding Demands</h2>
+        <form style="align-content: center; margin-left: 670px; "  action="/viewCrowdfundingDemands" method="get">
+            <input type="submit" value="View All Demands" class="view_crowd_funding_button">
         </form>
     </div>
-    <hr>
-    <div>
-        <h2>Make a Donation</h2>
+   
+    <br>
+    <br>
+    <div style="align-content: center; margin:auto;" class="make_donation_card">
+        <h2 class="make_donation_sub_heading">Make a Donation</h2>
+        <div class="make_donation_card_form">
         <form action="/payCrowdfunding" method="post">
-            <input type="hidden" name="payer_id" value="{{aadhar}}">
-            <label for="p_id">Patient ID (Aadhar) to Donate To:</label><br>
-            <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-            <label for="amount">Donation Amount:</label><br>
+            <div  >
+            <input  type="hidden" name="payer_id" value="{{aadhar}}">
+            <label  for="p_id">Patient ID (Aadhar) to Donate To:</label>
+            </div>
+            <br>
+            <div  >
+            <input  type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required ><br><br>
+            <label  for="amount">Donation Amount:</label>
+            </div><br>
+            <div  >
             <input type="number" id="amount" name="amount" min="1" required><br><br>
-            <label for="gateway">Payment Method:</label><br>
+            <label  for="gateway">Payment Method:</label>
+            </div><br>
             <select id="gateway" name="gateway" required>
                 <option value="" disabled>Select Payment Method</option>
                 <option value="Credit Card">Credit Card</option>
@@ -34,8 +44,9 @@
                 <option value="Bank Transfer">Bank Transfer</option>
                 <option value="UPI">UPI</option>
             </select><br><br>
-            <input type="submit" value="Donate">
+            <input class="make_donation_card_donate_button" type="submit" value="Donate">
         </form>
+        </div>
     </div>
 </body>
 </html>

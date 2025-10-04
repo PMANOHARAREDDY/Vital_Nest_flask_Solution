@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Bills</title>
+    <title >Patient Bills</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <h2>Patient Bills for Hospital {{hsp_id}}</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
+<body  style="background-color:#ebf9fa;">
+    <h2 class="admin_user_approval_card_heading">Patient Bills for Hospital {{hsp_id}}</h2>
+    <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
         <thead>
             <tr>
                 <th>Patient ID</th>
@@ -18,7 +18,7 @@
                 <th>Hospital ID</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody  style="background-color: white;">
             {% for bill in bills %}
             <tr>
                 <td>{{ bill[0] }}</td>
