@@ -307,6 +307,11 @@
     border-width: 0px;
 }
 
+.view_crowd_funding_backgroung_image{
+    background-image: url("https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjg3MC10YW5nLTM2XzEuanBn.jpg");
+    background-size: cover;
+}
+
 .view_crowd_funding_main_heading{
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 36px;
