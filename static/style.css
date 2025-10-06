@@ -408,3 +408,14 @@
     font-size: 18px;
     font-weight: 400;
 }
+
+.view_log_data_button{
+    background-color: rgb(86, 24, 141);
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    width: 10vw;
+    height: 36px;
+    font-size: 20px;
+    font-weight: 500;
+}
