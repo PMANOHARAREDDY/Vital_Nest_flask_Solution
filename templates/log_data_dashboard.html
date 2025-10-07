@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalNest Log Data</title>
+    <link rel = "stylesheet" href = "/static/style.css">
+</head>
+<body>
+        <div style="background-color: aliceblue;">
+        <h1>Log Data</h1>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin:center; background-color: rgb(250, 240, 255);">
+            <thead>
+                <tr>
+                    <th>Aadhar</th>
+                    <th>Log Time Stamp</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log[0] }}</td>
+                    <td>{{ log[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

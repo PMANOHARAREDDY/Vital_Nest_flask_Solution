@@ -127,24 +127,12 @@
         </table>
     </div>
     <hr>
-    <div>
+    <div style="text-align: center;">
         <h2>Log Data</h2>
-        <table border="1.5" cellpadding="15" cellspacing="0" style="margin:center; background-color: rgb(250, 240, 255);">
-            <thead>
-                <tr>
-                    <th>Aadhar</th>
-                    <th>Log Time Stamp</th>
-                </tr>
-            </thead>
-            <tbody style="background-color: white;">
-                {% for log in logs %}
-                <tr>
-                    <td>{{ log[0] }}</td>
-                    <td>{{ log[1] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+        <a href="/LogData">
+        <button class="view_log_data_button">View Log Data</button>
+        </a>
     </div>
     <hr>
     <div>

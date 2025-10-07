@@ -104,9 +104,6 @@ def login():
                 sql = "select name, aadhar, mobile, user_type  from acl_list where user_type<>'admin'"
                 curr.execute(sql)
                 Users_data = curr.fetchall()
-                sql = "select aadhar, log_timestamp from log_table order by log_timestamp desc"
-                curr.execute(sql)
-                Log_data = curr.fetchall()
                 sql = "select * from inventory_data order by hsp_id, supplier_id , supplied_timestamp desc"
                 curr.execute(sql)
                 supply_data = curr.fetchall()
@@ -475,78 +472,6 @@ def payCrowdfunding():
     curr.execute(query)
     conn.commit()
     return "Payment successful"
-
-@app.route('/manageReps/<ind_id>/<medicine_name>', methods=["GET", "POST"])
-def manageReps(ind_id, medicine_name):
-    if request.method == "POST":
-        offer_amount = request.form.get('offer_amount')
-        rep_ids = request.form.getlist('rep_aadhar')
-        for rep_id in rep_ids:
-            curr.execute("SELECT 1 FROM medicine_representatives WHERE ind_id = %s AND medicine_name = %s AND rep_id = %s", (ind_id, medicine_name, rep_id))
-            if curr.fetchone():
-                continue  
-            curr.execute("SELECT 1 FROM rep_offers WHERE ind_id = %s AND medicine_name = %s AND rep_id = %s AND status = 'pending'", (ind_id, medicine_name, rep_id))
-            if curr.fetchone():
-                continue  
-            insert_query = "INSERT INTO rep_offers (ind_id, medicine_name, rep_id, offer_amount, status) VALUES (%s, %s, %s, %s, 'pending')"
-            curr.execute(insert_query, (ind_id, medicine_name, rep_id, offer_amount))
-        conn.commit()
-    curr.execute("SELECT aadhar, name FROM acl_list WHERE user_type = 'rep'")
-    reps = curr.fetchall()
-    curr.execute("SELECT rep_id FROM medicine_representatives WHERE ind_id = %s AND medicine_name = %s", (ind_id, medicine_name))
-    assigned_reps = [row[0] for row in curr.fetchall()]
-    curr.execute("SELECT rep_id, offer_amount FROM rep_offers WHERE ind_id = %s AND medicine_name = %s AND status = 'pending'", (ind_id, medicine_name))
-    pending_offers = {row[0]: row[1] for row in curr.fetchall()}
-    curr.execute("SELECT rep_id, hsp_id, medicine_name, timestamp FROM rep_visit_confirmations WHERE medicine_name = %s AND status = 'confirmed' AND ind_id = %s", (medicine_name, ind_id))
-    confirmed_visits = curr.fetchall()
-    return render_template('manage_reps.html', ind_id=ind_id, medicine_name=medicine_name, reps=reps, assigned_reps=assigned_reps, pending_offers=pending_offers, confirmed_visits=confirmed_visits)
-
-@app.route('/hospitalMetrics', methods=["POST"])
-def hospitalMetrics():
-    hsp_id = request.form.get('hsp_id')
-    period_type = request.form.get('period_type')
-    year = request.form.get('year')
-    month = request.form.get('month')
-    day = request.form.get('day')
-    if not hsp_id or not period_type or not year:
-        return "HSP ID, period type, and year required", 400
-    if period_type in ['month', 'day'] and not month:
-        return "Month required for month/day", 400
-    if period_type == 'day' and not day:
-        return "Day required for day", 400
-
-    if period_type == 'year':
-        period_value = year
-    elif period_type == 'month':
-        period_value = '{}-{}'.format(year, month)
-    elif period_type == 'day':
-        period_value = day
-    else:
-        return "Invalid period type", 400
-
-    where_clause = ""
-    if period_type == 'day':
-        where_clause = "AND DATE(timestamp) = '{}'".format(period_value)
-    elif period_type == 'month':
-        year, month = period_value.split('-')
-        where_clause = "AND YEAR(timestamp) = {} AND MONTH(timestamp) = {}".format(year, month)
-    elif period_type == 'year':
-        where_clause = "AND YEAR(timestamp) = {}".format(period_value)
-    else:
-        return "Invalid period type", 400
-
-    query = "select count(distinct p_id) from treatment_record where hsp_id = '{}' {}".format(hsp_id, where_clause.replace('timestamp', 'date_of_visit'))
-    curr.execute(query)
-    patients_count = curr.fetchone()[0]
-    query = "select count(*) from patient_data where hsp_id = '{}' {}".format(hsp_id, where_clause.replace('timestamp', 'dop'))
-    curr.execute(query)
-    bills_count = curr.fetchone()[0]
-    query = "select sum(quantity) from patient_data where hsp_id = '{}' {}".format(hsp_id, where_clause.replace('timestamp', 'dop'))
-    curr.execute(query)
-    total_quantity = curr.fetchone()[0]
-    if total_quantity is None:
-        total_quantity = 0
-    return render_template('hospital_metrics.html', hsp_id=hsp_id, patients_count=patients_count, bills_count=bills_count, total_quantity=total_quantity, period_type=period_type, period_value=period_value)
 
 if __name__ == "__main__":
     app.run(debug = True)

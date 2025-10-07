@@ -6,10 +6,10 @@
     <title>Crowdfunding Demands</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body class="view_crowd_funding_backgroung_image">
     <h2 class="view_crowd_funding_main_heading">Crowdfunding Demands</h2>
     <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; ">
-        <thead style="background-color:rgb(220, 254, 223); color:rgb(63, 91, 115) ;">
+        <thead style="background-color:rgb(218, 250, 235); color:rgb(63, 91, 115) ;">
             <tr>
                 <th>Patient ID</th>
                 <th>Total Demand</th>
@@ -18,7 +18,7 @@
                 <th>Date of Register</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="background-color: white;">
             {% for demand in demands %}
             <tr>
                 <td>{{ demand[0] }}</td>
