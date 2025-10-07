@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Representatives</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body style="background-color:#ebf9fa;">
+    <h1>Manage Representatives for {{ medicine_name }}</h1>
+    <h3>Industry ID: {{ ind_id }}</h3>
+    <form method="post">
+        <label for="offer_amount">Offer Amount:</label><br>
+        <input type="number" name="offer_amount" id="offer_amount" required min="0" step="0.01"><br><br>
+        <label for="rep_aadhar">Select Representatives:</label><br>
+        {% for rep in reps %}
+        <input type="checkbox" name="rep_aadhar" value="{{ rep[0] }}" {% if rep[0] in assigned_reps %}checked{% endif %} {% if rep[0] in pending_offers %}disabled{% endif %}>
+        {{ rep[1] }} ({{ rep[0] }})
+        {% if rep[0] in pending_offers %}
+            - Offer Pending: {{ pending_offers[rep[0]] }}
+        {% endif %}
+        <br>
+        {% endfor %}
+        <br>
+        <button type="submit">Send Offers</button>
+    </form>
+    <br>
+    {% if confirmed_visits %}
+    <h2>Confirmed Visit Confirmations</h2>
+    <table border="1.5" cellpadding="15" cellspacing="0" style="margin: 25px;">
+        <thead>
+            <tr class="industry_dashboard_add_medicine_table">
+                <th>Rep ID</th>
+                <th>Hospital ID</th>
+                <th>Medicine Name</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody style="background-color: white;">
+            {% for visit in confirmed_visits %}
+            <tr style="padding: 10px; text-align: center; font-size: 22px; font-weight: 400;">
+                <td>{{ visit[0] }}</td>
+                <td>{{ visit[1] }}</td>
+                <td>{{ visit[2] }}</td>
+                <td>{{ visit[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No confirmed visit confirmations.</p>
+    {% endif %}
+    <br>
+    <a href="#" onclick="history.back()">Back to Dashboard</a>
+</body>
+</html>

@@ -133,6 +133,39 @@
             <input type="submit" value="View Demands">
         </form>
     </div>
+    <hr>
+    <div>
+        <h2>Pending Visit Requests</h2>
+        {% if pending_visits %}
+        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+            <thead>
+                <tr>
+                    <th>Rep ID</th>
+                    <th>Medicine</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visit in pending_visits %}
+                <tr>
+                    <td>{{ visit[0] }}</td>
+                    <td>{{ visit[1] }}</td>
+                    <td>
+                        <form method="post" action="/confirmVisit">
+                            <input type="hidden" name="rep_id" value="{{ visit[0] }}">
+                            <input type="hidden" name="medicine_name" value="{{ visit[1] }}">
+                            <input type="hidden" name="hsp_id" value="{{ hsp_id }}">
+                            <button type="submit">Confirm Visit</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No pending visit requests.</p>
+        {% endif %}
+    </div>
 
 
 

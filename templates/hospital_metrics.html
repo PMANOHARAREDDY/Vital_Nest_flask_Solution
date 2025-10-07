@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Performance Metrics</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body style="background-color:#ebf9fa;">
+    <h1>Hospital Performance Metrics for HSP ID: {{ hsp_id }}</h1>
+    <p>Period: {{ period_type }} - {{ period_value }}</p>
+    <hr>
+    <div>
+        <h2>Key Metrics</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                <tr>
+                    <td>Number of Patients Treated</td>
+                    <td>{{ patients_count }}</td>
+                </tr>
+                <tr>
+                    <td>Number of Bills Generated</td>
+                    <td>{{ bills_count }}</td>
+                </tr>
+                <tr>
+                    <td>Total Quantity Dispensed</td>
+                    <td>{{ total_quantity }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <a href="/login">Back to Admin Dashboard</a>
+</body>
+</html>

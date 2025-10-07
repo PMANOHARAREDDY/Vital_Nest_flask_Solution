@@ -6,8 +6,114 @@
     <title>Vital Nest</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body style="background-color:#ebf9fa;">
     <h2>Welcome to the Medical Representative Page of Vital Nest</h2>
-    <h3>{{pharama_data}}</h3>
+
+    <h3>Pending Offers</h3>
+    {% if pending_offers %}
+    <table border="1">
+        <tr>
+            <th>Industry ID</th>
+            <th>Medicine Name</th>
+            <th>Offer Amount</th>
+            <th>Action</th>
+        </tr>
+        {% for offer in pending_offers %}
+        <tr>
+            <td>{{ offer[0] }}</td>
+            <td>{{ offer[1] }}</td>
+            <td>{{ offer[2] }}</td>
+            <td>
+                <form method="post" action="/acceptOffer" style="display:inline;">
+                    <input type="hidden" name="ind_id" value="{{ offer[0] }}">
+                    <input type="hidden" name="medicine_name" value="{{ offer[1] }}">
+                    <input type="hidden" name="rep_id" value="{{ rep_id }}">
+                    <button type="submit">Accept</button>
+                </form>
+                <form method="post" action="/rejectOffer" style="display:inline;">
+                    <input type="hidden" name="ind_id" value="{{ offer[0] }}">
+                    <input type="hidden" name="medicine_name" value="{{ offer[1] }}">
+                    <input type="hidden" name="rep_id" value="{{ rep_id }}">
+                    <button type="submit">Reject</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No pending offers.</p>
+    {% endif %}
+
+    <h3>Assigned Medicines</h3>
+    {% if assigned_meds %}
+    <table border="1">
+        <tr>
+            <th>Industry ID</th>
+            <th>Medicine Name</th>
+        </tr>
+        {% for med in assigned_meds %}
+        <tr>
+            <td>{{ med[0] }}</td>
+            <td>{{ med[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No assigned medicines.</p>
+    {% endif %}
+
+    <h3>Hospital Details</h3>
+    {% if hsp_data %}
+    <table border="1">
+        <tr>
+            <th>Hospital ID</th>
+            <th>Manager Aadhar</th>
+            <th>Contact Number</th>
+            <th>Action</th>
+        </tr>
+        {% for hsp in hsp_data %}
+        <tr>
+            <td>{{ hsp[0] }}</td>
+            <td>{{ hsp[1] }}</td>
+            <td>{{ hsp[2] }}</td>
+            <td>
+                <form method="post" action="/requestVisit" style="display:inline;">
+                    <input type="hidden" name="hsp_id" value="{{ hsp[0] }}">
+                    <input type="hidden" name="rep_id" value="{{ rep_id }}">
+                    <select name="medicine_name" required>
+                        <option value="">Select Medicine</option>
+                        {% for med in assigned_meds %}
+                        <option value="{{ med[1] }}">{{ med[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Request Visit</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No hospital details available.</p>
+    {% endif %}
+
+    <h3>Confirmed Visits</h3>
+    {% if confirmed_visits %}
+    <table border="1">
+        <tr>
+            <th>Hospital ID</th>
+            <th>Medicine Name</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for visit in confirmed_visits %}
+        <tr>
+            <td>{{ visit[0] }}</td>
+            <td>{{ visit[1] }}</td>
+            <td>{{ visit[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No confirmed visits.</p>
+    {% endif %}
 </body>
 </html>

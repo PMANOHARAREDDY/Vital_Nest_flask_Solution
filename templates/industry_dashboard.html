@@ -7,7 +7,7 @@
     <link rel = "stylesheet" href = "/static/style.css">
 </head>
 <body style="background-color:#ebf9fa;">
-    <h1 class="industry_dashboard_main_heading">Vital Nest pharma Industry Dashboard {{ind_id}}</h1>
+    <h1 class="industry_doashboard_main_heading">Vital Nest pharma Industry Dashboard {{ind_id}}</h1>
     <hr>
     <div>
         <h2 class="industry_dashboard_sub_heading">Medicine data</h2>
@@ -19,7 +19,8 @@
                     <th>Side Effects</th>
                     <th>Current Quantity</th>
                     <th>Increment Quantity</th>
-                    <td>Remove Medicine</td>
+                    <th>Remove Medicine</th>
+                    <th>Manage Representatives</th>
                 </tr>
             </thead>
             <tbody style="background-color: white;">
@@ -43,6 +44,8 @@
                             <button type="submit" class="industry_dashboard_add_medicine_remove_button">Remove</button>
                         </form>
                     </td>
+                    <td>
+                        <a href="{{ url_for('manageReps', ind_id=ind_id, medicine_name=medicine[1]) }}">Manage</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -105,6 +108,7 @@
             </tbody>
         </table>
     </div>
+
 
 
 </body>

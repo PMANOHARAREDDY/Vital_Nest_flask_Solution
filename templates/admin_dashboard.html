@@ -10,7 +10,7 @@
     <h1 class="admin_user_approval_card_heading">Vital Nest Admin Dashboard - {{admin_id}}</h1>
     <hr>
     <div>
-        <h2 style="text-align: center;">Users data</h2>
+        <h2 style="text-align: center;">Registration Approval Data</h2>
         <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
@@ -83,33 +83,22 @@
         </table>
     </div>
     <hr>
-    
     <div>
-        <h2 style="text-align: center;">Inventory Data</h2>
+        <h2 style="text-align: center;">Hospital Managers in Charge</h2>
         <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
-                    <th>Supplier ID</th>
-                    <th>Quantity</th>
-                    <th>Item</th>
-                    <th>Price Per Unit</th>
-                    <th>Supplied Timestamp</th>
                     <th>HSP ID</th>
-                    <th>Type of Product</th>
-                    <th>IND ID</th>
+                    <th>Manager ID</th>
+                    <th>Phone Number</th>
                 </tr>
             </thead>
             <tbody style="background-color: white;">
-                {% for inventory in supply %}
+                {% for record in hsp_data %}
                 <tr>
-                    <td>{{ inventory[0] }}</td>
-                    <td>{{ inventory[1] }}</td>
-                    <td>{{ inventory[2] }}</td>
-                    <td>{{ inventory[3] }}</td>
-                    <td>{{ inventory[4] }}</td>
-                    <td>{{ inventory[5] }}</td>
-                    <td>{{ inventory[6] }}</td>
-                    <td>{{ inventory[7] }}</td>
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -117,17 +106,17 @@
     </div>
     <hr>
     <div>
-        <h2 style="text-align: center;">Data Records</h2>
+        <h2 style="text-align: center;">Industry Managers in Charge</h2>
         <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
-                    <th>HSP ID</th>
-                    <th>Supplier ID</th>
                     <th>IND ID</th>
+                    <th>Manager ID</th>
+                    <th>Phone Number</th>
                 </tr>
             </thead>
             <tbody style="background-color: white;">
-                {% for record in hsp_data %}
+                {% for record in ind_data %}
                 <tr>
                     <td>{{ record[0] }}</td>
                     <td>{{ record[1] }}</td>
@@ -156,6 +145,65 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    <hr>
+    <div>
+        <h2 style="text-align: center;">View Hospital Performance Metrics</h2>
+        <form action="/hospitalMetrics" method="post">
+            <label for="hsp_id">Select Hospital ID:</label>
+            <select name="hsp_id" id="hsp_id" required>
+                {% for hsp in hsp_data %}
+                <option value="{{ hsp[0] }}">{{ hsp[0] }}</option>
+                {% endfor %}
+            </select><br><br>
+            <label for="period_type">Select Period Type:</label>
+            <select name="period_type" id="period_type" required>
+                <option value="day">Day</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select><br><br>
+            <div id="year_div" style="display:none;">
+                <label for="year">Year:</label>
+                <select name="year" id="year">
+                    {% for y in range(2020, 2031) %}
+                    <option value="{{ y }}">{{ y }}</option>
+                    {% endfor %}
+                </select><br><br>
+            </div>
+            <div id="month_div" style="display:none;">
+                <label for="month">Month:</label>
+                <select name="month" id="month">
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select><br><br>
+            </div>
+            <div id="day_div" style="display:none;">
+                <label for="day">Date:</label>
+                <input type="date" name="day" id="day"><br><br>
+            </div>
+            <script>
+                document.getElementById('period_type').addEventListener('change', function() {
+                    var type = this.value;
+                    document.getElementById('year_div').style.display = (type === 'year' || type === 'month') ? 'block' : 'none';
+                    document.getElementById('month_div').style.display = (type === 'month') ? 'block' : 'none';
+                    document.getElementById('day_div').style.display = (type === 'day') ? 'block' : 'none';
+                    document.getElementById('year').required = (type === 'year' || type === 'month');
+                    document.getElementById('month').required = (type === 'month');
+                    document.getElementById('day').required = (type === 'day');
+                });
+            </script>
+            <button type="submit">View Metrics</button>
+        </form>
     </div>
 
 </body>
