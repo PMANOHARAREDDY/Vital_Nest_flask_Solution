@@ -116,10 +116,17 @@ def login():
                 sql = "select name, aadhar, mobile, user_type, request_timestamp, passwd from registration_approval_data where approval_status = 'not approved'"
                 curr.execute(sql)
                 approval_data = curr.fetchall()
-                return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, logs = Log_data, supply = supply_data, hsp_data = hsp_data,ind_data = ind_data, approval_data = approval_data)
+                return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, supply = supply_data, hsp_data = hsp_data,ind_data = ind_data, approval_data = approval_data)
         else:
             print("Passwd Not Matching try again....")
             return render_template('index.html')
+
+@app.route('/LogData')
+def logData():
+    sql = "select aadhar, log_timestamp from log_table order by log_timestamp desc"
+    curr.execute(sql)
+    Log_data = curr.fetchall()
+    return render_template('log_data_dashboard.html',logs = Log_data)
 
 @app.route('/acceptOffer', methods=["POST"])
 def acceptOffer():
