@@ -127,6 +127,97 @@
         </table>
     </div>
     <hr>
+    <div>
+        <h2 style="text-align: center;">Blood Donation Camp Requests</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>NGO ID</th>
+                    <th>Request Details</th>
+                    <th>Status</th>
+                    <th>Request Timestamp</th>
+                    <th>Take Action</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                {% for request in blood_requests %}
+                <tr>
+                    <td>{{ request[0] }}</td>
+                    <td>{{ request[1] }}</td>
+                    <td>{{ request[2] }}</td>
+                    <td>{{ request[3] }}</td>
+                    <td>{{ request[4] }}</td>
+                    <td>
+                        {% if request[3] == 'pending' %}
+                        <form action="/approveBloodDonationRequest" method="post">
+                            <input type="hidden" name="request_id" value="{{ request[0] }}">
+                            <button class="admin_user_approval_card_accept_button_design" type="submit" name="action" value="approve">Approve</button>
+                            <button class="admin_user_approval_card_reject_button_design" type="submit" name="action" value="reject">Reject</button>
+                        </form>
+                        {% else %}
+                        {{ request[3] }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2 style="text-align: center;">Approved Blood Donation Camp Requests</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>NGO ID</th>
+                    <th>Request Details</th>
+                    <th>Status</th>
+                    <th>Request Timestamp</th>
+                    <th>Donation Data</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                {% for request in approved_blood_requests %}
+                <tr>
+                    <td>{{ request[0] }}</td>
+                    <td>{{ request[1] }}</td>
+                    <td>{{ request[2] }}</td>
+                    <td>{{ request[3] }}</td>
+                    <td>{{ request[4] }}</td>
+                    <td>
+                        <form action="/viewBloodDonationData" method="post">
+                            <input type="hidden" name="request_id" value="{{ request[0] }}">
+                            <button type="submit">View Data</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2 style="text-align: center;">Blood Units Available</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
+            <thead>
+                <tr>
+                    <th>Blood Group</th>
+                    <th>Units Available</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                {% for unit in blood_units %}
+                <tr>
+                    <td>{{ unit[0] }}</td>
+                    <td>{{ unit[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
     <div style="text-align: center;">
         <h2>Log Data</h2>
 

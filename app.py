@@ -61,7 +61,18 @@ def login():
                 query = "select rep_id, medicine_name from rep_visit_requests where hsp_id = '{}' and status = 'pending'".format(hsp_id)
                 curr.execute(query)
                 pending_visits = curr.fetchall()
-                return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds, pending_visits=pending_visits)
+                query = "select blood_group, units from blood_units_available where units > 0 order by blood_group"
+                curr.execute(query)
+                blood_units = curr.fetchall()
+                return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds, pending_visits=pending_visits, blood_units=blood_units)
+            elif user_type=="NGO":
+                query = "select ngo_id from ngo_identity where manager_id = {}".format(aadhar)
+                res = curr.execute(query)
+                ngo_id = curr.fetchone()[0]
+                query = "select id, request_details, status, request_timestamp from blood_donation_requests where ngo_id = '{}' order by request_timestamp desc".format(ngo_id)
+                curr.execute(query)
+                requests = curr.fetchall()
+                return render_template('ngo_dashboard.html', ngo_id = ngo_id, requests=requests)
             elif user_type=="supplier":
                 query = "select * from medicine_data"
                 curr.execute(query)
@@ -119,7 +130,16 @@ def login():
                 sql = "select name, aadhar, mobile, user_type, request_timestamp, passwd from registration_approval_data where approval_status = 'not approved'"
                 curr.execute(sql)
                 approval_data = curr.fetchall()
-                return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, supply = supply_data, hsp_data = hsp_data,ind_data = ind_data, approval_data = approval_data)
+                sql = "select id, ngo_id, request_details, status, request_timestamp from blood_donation_requests where status = 'pending' order by request_timestamp desc"
+                curr.execute(sql)
+                pending_blood_requests = curr.fetchall()
+                sql = "select id, ngo_id, request_details, status, request_timestamp from blood_donation_requests where status = 'approved' order by request_timestamp desc"
+                curr.execute(sql)
+                approved_blood_requests = curr.fetchall()
+                sql = "select blood_group, units from blood_units_available order by blood_group"
+                curr.execute(sql)
+                blood_units = curr.fetchall()
+                return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, supply = supply_data, hsp_data = hsp_data,ind_data = ind_data, approval_data = approval_data, pending_blood_requests=pending_blood_requests, approved_blood_requests=approved_blood_requests, blood_units=blood_units)
         else:
             print("Passwd Not Matching try again....")
             return render_template('index.html')
@@ -235,8 +255,18 @@ def billPatient():
     quantity = request.form.get('quantity')
     query = "insert into patient_data (p_id, item, quantity, hsp_id) VALUES (%s, %s, %s, %s)"
     curr.execute(query, (aadhar, item, int(quantity), hsp_id))
-    update_query = "update medicine_data_for_patients set quantity = quantity - {} where hsp_id = '{}' and med_name = '{}'".format(int(quantity), hsp_id, item)
-    curr.execute(update_query)
+    blood_groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+    if item in blood_groups:
+        check_query = "select units from blood_units_available where blood_group = %s"
+        curr.execute(check_query, (item,))
+        result = curr.fetchone()
+        if not result or result[0] < int(quantity):
+            return "Insufficient blood units available for {}".format(item), 400
+        update_query = "update blood_units_available set units = units - {} where blood_group = '{}'".format(int(quantity), item)
+        curr.execute(update_query)
+    else:
+        update_query = "update medicine_data_for_patients set quantity = quantity - {} where hsp_id = '{}' and med_name = '{}'".format(int(quantity), hsp_id, item)
+        curr.execute(update_query)
     conn.commit()
     query = "select supplier_id, medicine_name, quantity, ind_id from medicine_data_replica_for_hospitals where quantity<>0 order by supplier_id, ind_id"
     curr.execute(query)
@@ -244,7 +274,13 @@ def billPatient():
     query = "select med_name, quantity from medicine_data_for_patients where hsp_id = '{}' and quantity > 0".format(hsp_id)
     curr.execute(query)
     patient_meds = curr.fetchall()
-    return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds)
+    query = "select blood_group, units from blood_units_available where units > 0 order by blood_group"
+    curr.execute(query)
+    blood_units = curr.fetchall()
+    query = "select rep_id, medicine_name from rep_visit_requests where hsp_id = '{}' and status = 'pending'".format(hsp_id)
+    curr.execute(query)
+    pending_visits = curr.fetchall()
+    return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds, blood_units=blood_units, pending_visits=pending_visits)
 
 @app.route('/addTreatmentRecord', methods=["GET", "POST"])
 def addTreatmentRecord():
@@ -562,6 +598,66 @@ def hospitalMetrics():
     if total_quantity is None:
         total_quantity = 0
     return render_template('hospital_metrics.html', hsp_id=hsp_id, patients_count=patients_count, bills_count=bills_count, total_quantity=total_quantity, period_type=period_type, period_value=period_value)
+
+@app.route('/requestBloodDonationCamp', methods=["POST"])
+def requestBloodDonationCamp():
+    ngo_id = request.form.get('ngo_id')
+    request_details = request.form.get('request_details')
+    if not ngo_id or not request_details:
+        return "NGO ID and request details are required", 400
+    query = "INSERT INTO blood_donation_requests (ngo_id, request_details) VALUES (%s, %s)"
+    curr.execute(query, (ngo_id, request_details))
+    conn.commit()
+    return redirect(url_for('login'))
+
+@app.route('/approveBloodDonationRequest', methods=["POST"])
+def approveBloodDonationRequest():
+    request_id = request.form.get('request_id')
+    action = request.form.get('action')
+    if not request_id or action not in ['approve', 'reject']:
+        return "Invalid request", 400
+    status = 'approved' if action == 'approve' else 'rejected'
+    query = "UPDATE blood_donation_requests SET status = %s WHERE id = %s"
+    curr.execute(query, (status, request_id))
+    conn.commit()
+    return redirect(url_for('login'))
+
+@app.route('/enterBloodDonationData', methods=["GET", "POST"])
+def enterBloodDonationData():
+    request_id = request.args.get('request_id') or request.form.get('request_id')
+    if not request_id:
+        return "Request ID missing", 400
+    query = "SELECT id, request_id, donor_aadhar, blood_group, tested_status, donation_timestamp FROM blood_donation_data WHERE request_id = %s"
+    curr.execute(query, (request_id,))
+    donations = curr.fetchall()
+    return render_template('enter_blood_donation_data.html', request_id=request_id, donations=donations)
+
+@app.route('/submitBloodDonationData', methods=["POST"])
+def submitBloodDonationData():
+    request_id = request.form.get('request_id')
+    donor_aadhar = request.form.get('donor_aadhar')
+    blood_group = request.form.get('blood_group')
+    tested_status = request.form.get('tested_status')
+    if not request_id or not donor_aadhar or not blood_group or not tested_status:
+        return "All fields are required", 400
+    query = "INSERT INTO blood_donation_data (request_id, donor_aadhar, blood_group, tested_status) VALUES (%s, %s, %s, %s)"
+    curr.execute(query, (request_id, donor_aadhar, blood_group, tested_status))
+    conn.commit()
+    if tested_status == 'passed':
+        update_query = "UPDATE blood_units_available SET units = units + 1 WHERE blood_group = %s"
+        curr.execute(update_query, (blood_group,))
+        conn.commit()
+    return redirect(url_for('enterBloodDonationData', request_id=request_id))
+
+@app.route('/viewBloodDonationData', methods=["POST"])
+def viewBloodDonationData():
+    request_id = request.form.get('request_id')
+    if not request_id:
+        return "Request ID missing", 400
+    query = "SELECT id, request_id, donor_aadhar, blood_group, tested_status, donation_timestamp FROM blood_donation_data WHERE request_id = %s"
+    curr.execute(query, (request_id,))
+    donations = curr.fetchall()
+    return render_template('view_blood_donation_data.html', request_id=request_id, donations=donations)
 
 if __name__ == "__main__":
     app.run(debug = True)

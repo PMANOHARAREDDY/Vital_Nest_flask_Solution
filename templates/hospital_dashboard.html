@@ -6,72 +6,79 @@
     <title>VitalNest</title>
     <link rel = "stylesheet" href = "/static/style.css">
 </head>
-<body >
-    <div class = "header">
-        <h2>VitalNest Hospital_dashBoard - {{hsp_id}}</h2>
-    </div>
+<body style="background-color:#ebf9fa;">
+    <h1 class="admin_user_approval_card_heading">VitalNest Hospital Dashboard - {{hsp_id}}</h1>
     <hr>
-    <h2><span>&#128522</span> Where life begins again...........</h2>
-    <div class = "image-row">
-        <img src = "/static/dashboard.jpg" alt = "hospital" >
-        <img src = "/static/Doctor_Holding_Stethoscope.webp" alt = "doctor">
-        <img src = "/static/Older-patient.jpg" alt = "patient">
-    </div>
-    <hr>
-    <div>
-        <h2>Patient Billing</h2>
-        <form action="/billPatient" method="post">
-            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
-
-            <label for="aadhar">Aadhar ID :</label>
-            <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-
-            <label for="item">Item :</label>
-            <select id="item" name="item" required>
-                {% for med in patient_meds %}
-                <option value="{{ med[0] }}">{{ med[0] }} (Qty: {{ med[1] }})</option>
-                {% endfor %}
-            </select><br><br>
-
-            <label for="quantity">Quantity :</label>
-            <input type="number" id="quantity" name="quantity" min="1" max="30" required><br><br>
-
-            <input type="submit" value="Submit">
-        </form>
+    <h2 style="text-align: center;"><span>&#128522</span> Where life begins again...........</h2>
+    <div class="image-row">
+        <img src="/static/dashboard.jpg" alt="hospital">
+        <img src="/static/Doctor_Holding_Stethoscope.webp" alt="doctor">
+        <img src="/static/Older-patient.jpg" alt="patient">
     </div>
     <hr>
     <div>
-        <h2>Patient Treatment Records Updation</h2>
-        <form action="/addTreatmentRecord" method="post">
-            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+        <h2 style="text-align: center;">Patient Billing</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/billPatient" method="post">
+                <input type="hidden" name="hsp_id" value="{{hsp_id}}">
 
-            <label for="p_id">Patient ID (Aadhar):</label><br>
-            <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-  
-            <label for="disease_remark">Disease Remark:</label><br>
-            <input type="text" id="disease_remark" name="disease_remark" maxlength="50"><br><br>
-  
-            <label for="treatment_remark">Treatment Remark:</label><br>
-            <input type="text" id="treatment_remark" name="treatment_remark" maxlength="50"><br><br>
-  
-            <input type="submit" value="Submit">
-        </form>
+                <label for="aadhar">Aadhar ID :</label>
+                <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+
+                <label for="item">Item :</label>
+                <select id="item" name="item" required>
+                    {% for med in patient_meds %}
+                    <option value="{{ med[0] }}">{{ med[0] }} (Qty: {{ med[1] }})</option>
+                    {% endfor %}
+                    {% for blood in blood_units %}
+                    <option value="{{ blood[0] }}">{{ blood[0] }} (Units: {{ blood[1] }})</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="quantity">Quantity :</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="30" required><br><br>
+
+                <button class="admin_patient_record_button_design" type="submit">Submit</button>
+            </form>
+        </div>
     </div>
     <hr>
     <div>
-        <h2>Search for Patient Records</h2>
-        <form action="/patientRecords" method="post">
-            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+        <h2 style="text-align: center;">Patient Treatment Records Updation</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/addTreatmentRecord" method="post">
+                <input type="hidden" name="hsp_id" value="{{hsp_id}}">
 
-            <label for="aadhar">Patient ID (Aadhar):</label><br>
-            <input type="text" id="p_id" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-            
-            <input type="submit" value="Submit">
-        </form>
+                <label for="p_id">Patient ID (Aadhar):</label><br>
+                <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+
+                <label for="disease_remark">Disease Remark:</label><br>
+                <input type="text" id="disease_remark" name="disease_remark" maxlength="50"><br><br>
+
+                <label for="treatment_remark">Treatment Remark:</label><br>
+                <input type="text" id="treatment_remark" name="treatment_remark" maxlength="50"><br><br>
+
+                <button class="admin_patient_record_button_design" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h2 style="text-align: center;">Search for Patient Records</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/patientRecords" method="post">
+                <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+
+                <label for="aadhar">Patient ID (Aadhar):</label><br>
+                <input type="text" id="p_id" name="aadhar" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+
+                <button class="admin_patient_record_button_design" type="submit">Submit</button>
+            </form>
+        </div>
     </div>
     <div>
         <h2 style="text-align: center;">Medicinal Data</h2>
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
                     <th>Supplier ID</th>
@@ -81,7 +88,7 @@
                     <th>Request Inventory</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for record in data %}
                 <tr>
                     <td>{{ record[0] }}</td>
@@ -95,7 +102,7 @@
                             <input type="hidden" name="med_name" value="{{record[1]}}">
                             <input type="hidden" name="hsp_id" value="{{hsp_id}}">
                             <input type="number" min="100" max="5000" name="quant">
-                            <button type="submit">Request</button>
+                            <button class="supplier_dashboard_request_button" type="submit">Request</button>
                         </form>
                     </td>
                 </tr>
@@ -105,39 +112,45 @@
     </div>
     <hr>
     <div>
-        <h2>View Patient Bills</h2>
-        <form action="/viewPatientBills" method="post">
-            <input type="hidden" name="hsp_id" value="{{hsp_id}}">
-            <label for="p_id">Patient ID (Aadhar):</label><br>
-            <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-            <input type="submit" value="View Bills">
-        </form>
+        <h2 style="text-align: center;">View Patient Bills</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/viewPatientBills" method="post">
+                <input type="hidden" name="hsp_id" value="{{hsp_id}}">
+                <label for="p_id">Patient ID (Aadhar):</label><br>
+                <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+                <button class="admin_patient_record_button_design" type="submit">View Bills</button>
+            </form>
+        </div>
     </div>
     <hr>
     <div>
-        <h2>Create Crowdfunding Demand</h2>
-        <form action="/createCrowdfundingDemand" method="post">
-            <label for="p_id">Patient ID (Aadhar):</label><br>
-            <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
-            <label for="total_demand">Total Demand:</label><br>
-            <input type="number" id="total_demand" name="total_demand" min="1" required><br><br>
-            <label for="required_donation">Required Donation:</label><br>
-            <input type="number" id="required_donation" name="required_donation" min="1" required><br><br>
-            <input type="submit" value="Create Demand">
-        </form>
+        <h2 style="text-align: center;">Create Crowdfunding Demand</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/createCrowdfundingDemand" method="post">
+                <label for="p_id">Patient ID (Aadhar):</label><br>
+                <input type="text" id="p_id" name="p_id" pattern="\d{12}" maxlength="12" minlength="12" required><br><br>
+                <label for="total_demand">Total Demand:</label><br>
+                <input type="number" id="total_demand" name="total_demand" min="1" required><br><br>
+                <label for="required_donation">Required Donation:</label><br>
+                <input type="number" id="required_donation" name="required_donation" min="1" required><br><br>
+                <button class="admin_patient_record_button_design" type="submit">Create Demand</button>
+            </form>
+        </div>
     </div>
     <hr>
     <div>
-        <h2>View Crowdfunding Demands</h2>
-        <form action="/viewCrowdfundingDemands" method="get">
-            <input type="submit" value="View Demands">
-        </form>
+        <h2 style="text-align: center;">View Crowdfunding Demands</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/viewCrowdfundingDemands" method="get">
+                <button class="admin_patient_record_button_design" type="submit">View Demands</button>
+            </form>
+        </div>
     </div>
     <hr>
     <div>
-        <h2>Pending Visit Requests</h2>
+        <h2 style="text-align: center;">Pending Visit Requests</h2>
         {% if pending_visits %}
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
             <thead>
                 <tr>
                     <th>Rep ID</th>
@@ -145,7 +158,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white;">
                 {% for visit in pending_visits %}
                 <tr>
                     <td>{{ visit[0] }}</td>
@@ -155,7 +168,7 @@
                             <input type="hidden" name="rep_id" value="{{ visit[0] }}">
                             <input type="hidden" name="medicine_name" value="{{ visit[1] }}">
                             <input type="hidden" name="hsp_id" value="{{ hsp_id }}">
-                            <button type="submit">Confirm Visit</button>
+                            <button class="admin_patient_record_button_design" type="submit">Confirm Visit</button>
                         </form>
                     </td>
                 </tr>
@@ -163,7 +176,7 @@
             </tbody>
         </table>
         {% else %}
-        <p>No pending visit requests.</p>
+        <p style="text-align: center;">No pending visit requests.</p>
         {% endif %}
     </div>
 
