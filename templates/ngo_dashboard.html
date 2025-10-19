@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalNest</title>
+    <link rel = "stylesheet" href = "/static/style.css">
+</head>
+<body style="background-color:#ebf9fa;">
+    <h1 class="admin_user_approval_card_heading">VitalNest NGO Dashboard - {{ngo_id}}</h1>
+    <hr>
+    <h2 style="text-align: center;"><span>&#128522</span> Welcome NGO - Helping Communities Thrive...........</h2>
+    <div class="image-row">
+        <img src="/static/dashboard.jpg" alt="ngo">
+        <img src="/static/Doctor_Holding_Stethoscope.webp" alt="doctor">
+        <img src="/static/Older-patient.jpg" alt="patient">
+    </div>
+    <hr>
+    <div>
+        <h2 style="text-align: center;">Request Blood Donation Camp</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/requestBloodDonationCamp" method="post">
+                <input type="hidden" name="ngo_id" value="{{ ngo_id }}">
+                <label for="request_details">Request Details:</label><br>
+                <textarea id="request_details" name="request_details" rows="4" cols="50" required></textarea><br><br>
+                <button class="admin_patient_record_button_design" type="submit">Submit Request</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h2 style="text-align: center;">Your Blood Donation Camp Requests</h2>
+        {% if requests %}
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Details</th>
+                    <th>Status</th>
+                    <th>Request Timestamp</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request[0] }}</td>
+                    <td>{{ request[1] }}</td>
+                    <td>{{ request[2] }}</td>
+                    <td>{{ request[3] }}</td>
+                    {% if request[2] == 'approved' %}
+                    <td>
+                        <form action="/enterBloodDonationData" method="post">
+                            <input type="hidden" name="request_id" value="{{ request[0] }}">
+                            <button class="admin_patient_record_button_design" type="submit">Enter Donation Data</button>
+                        </form>
+                    </td>
+                    {% else %}
+                    <td>{{ request[2] }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center;">No requests found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
