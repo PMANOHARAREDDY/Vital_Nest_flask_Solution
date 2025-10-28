@@ -52,6 +52,9 @@ def login():
                 query = "select hsp_id from hsp_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
                 hsp_id = curr.fetchone()[0]
+                query = "select * from rejected_inventory_request_to_supplier_by_hospital"
+                curr.execute(query)
+                rejected_data = curr.fetchall()
                 query = "select supplier_id, medicine_name, quantity, ind_id from medicine_data_replica_for_hospitals where quantity<>0 order by supplier_id, ind_id"
                 curr.execute(query)
                 inven_data = curr.fetchall()
@@ -64,7 +67,7 @@ def login():
                 query = "select blood_group, units from blood_units_available where units > 0 order by blood_group"
                 curr.execute(query)
                 blood_units = curr.fetchall()
-                return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds, pending_visits=pending_visits, blood_units=blood_units)
+                return render_template('hospital_dashboard.html', hsp_id = hsp_id, data = inven_data, patient_meds = patient_meds, pending_visits=pending_visits, blood_units=blood_units, rejected_data = rejected_data)
             elif user_type=="NGO":
                 query = "select ngo_id from ngo_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
@@ -80,23 +83,23 @@ def login():
                 query = "select * from inventory_data_industry_to_supplier where supplier_id = {}".format(aadhar)
                 curr.execute(query)
                 inventory_data = curr.fetchall()
+                query = "select * from rejected_inventory_request_to_industry_by_supplier where supplier_id = {}".format(aadhar)
+                curr.execute(query)
+                rejected_inventory_data = curr.fetchall()
                 query = "select * from inventory_request_to_supplier_by_hospital where supplier_id = '{}'".format(aadhar)
                 curr.execute(query)
                 request_data = curr.fetchall()
-                return render_template('supplier_dashboard.html', data = data, manager_id = aadhar, inventory_data = inventory_data, request_data = request_data)
+                return render_template('supplier_dashboard.html', data = data, manager_id = aadhar, inventory_data = inventory_data, request_data = request_data, rejected_inventory_data = rejected_inventory_data)
             elif user_type=="industry":
                 query = "select ind_id from ind_identity where manager_id = {}".format(aadhar)
                 res = curr.execute(query)
                 ind_id = curr.fetchone()[0]
-                print("ind id fetch successful")
                 query = "select * from medicine_data where ind_id = '{}'".format(ind_id)
                 curr.execute(query)
                 medicines = curr.fetchall()
-                print("medicines fetch successful")
                 query = "select * from inventory_request_to_industry_by_supplier where ind_id = '{}'".format(ind_id)
                 curr.execute(query)
                 request_data = curr.fetchall()
-                print("request data fetch successful")
                 return render_template('industry_dashboard.html', ind_id = ind_id, medicines = medicines, request_data = request_data)
             elif user_type=="rep":
                 query = "select ind_id, medicine_name, offer_amount from rep_offers where rep_id = {} and status = 'pending'".format(aadhar)
@@ -114,7 +117,7 @@ def login():
                 return render_template("representative_dashboard.html", pending_offers=pending_offers, assigned_meds=assigned_meds, rep_id=aadhar, hsp_data=hsp_data, confirmed_visits=confirmed_visits)
             elif user_type=="payer":
                 return render_template("payer_dashboard.html", aadhar=aadhar)
-            else:
+            elif user_type == 'admin':
                 sql = "select name, aadhar, mobile, user_type  from acl_list where user_type<>'admin'"
                 curr.execute(sql)
                 Users_data = curr.fetchall()
@@ -141,7 +144,7 @@ def login():
                 blood_units = curr.fetchall()
                 return render_template('admin_dashboard.html', admin_id = aadhar, users = Users_data, supply = supply_data, hsp_data = hsp_data,ind_data = ind_data, approval_data = approval_data, pending_blood_requests=pending_blood_requests, approved_blood_requests=approved_blood_requests, blood_units=blood_units)
         else:
-            print("Passwd Not Matching try again....")
+            print("Passwd Not Matching try again.... or user type is undefined")
             return render_template('index.html')
 
 @app.route('/LogData')
@@ -217,7 +220,6 @@ def registerToDB():
     passwd = request.form.get('passwd')
     utype = request.form.get('utype')
     hashed_passwd = generate_password_hash(passwd)
-    print(len(hashed_passwd))
     if utype == 'payer':
         query = "insert into acl_list (name, aadhar, mobile, passwd, user_type) values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, hashed_passwd, utype)
         curr.execute(query)
@@ -336,7 +338,6 @@ def approveUser():
         query = "delete from registration_approval_data where aadhar = {}".format(aadhar)
         curr.execute(query)
         conn.commit()
-        print("Rejection of this user is successful")
         return "Rejected Successfully"
     else:
         query = "insert into acl_list values('{}', {}, {}, '{}', '{}')".format(name, aadhar, mobile, passwd, type)
@@ -406,6 +407,9 @@ def sendInventory():
         curr.execute(query)
         conn.commit()
     else:
+        query = "insert into rejected_inventory_request_to_industry_by_supplier (supplier_id, quantity, ind_id, med_name) values({}, {}, '{}', '{}')".format(supplier_id, quantity, ind_id, med_name)
+        curr.execute(query)
+        conn.commit()
         query = "delete from inventory_request_to_industry_by_supplier where supplier_id = '{}' and med_name = '{}'".format(supplier_id, med_name)
         curr.execute(query)
         conn.commit()
@@ -413,7 +417,6 @@ def sendInventory():
 
 @app.route('/requestInventoryByHospital', methods=["GET", "POST"])
 def requestInventoryByHospital():
-    print("Entered Bhai")
     supplier_id = request.form.get('supplier_id')
     quantity = request.form.get('quant')
     ind_id = request.form.get('ind_id')
@@ -428,6 +431,7 @@ def requestInventoryByHospital():
 def sendInventoryToHospital():
     supplier_id = request.form.get('supplier_id')
     hsp_id = request.form.get('hsp_id')
+    ind_id = request.form.get('ind_id')
     med_name = request.form.get('med_name')
     quantity = request.form.get('quantity')
     action = request.form.get('action')
@@ -453,11 +457,13 @@ def sendInventoryToHospital():
         curr.execute(query)
         conn.commit()
     else:
-        print("HSP ID", hsp_id)
-        print("Medicine Name", med_name)
+        query = "insert into rejected_inventory_request_to_supplier_by_hospital (supplier_id, quantity, ind_id, med_name, hsp_id) values({}, {}, '{}', '{}', '{}')".format(supplier_id, quantity, ind_id, med_name, hsp_id)
+        curr.execute(query)
+        conn.commit()
         query = "delete from inventory_request_to_supplier_by_hospital where hsp_id = '{}' and med_name = '{}'".format(hsp_id, med_name)
         curr.execute(query)
         conn.commit()
+
     return "Send Inventory data by Hospital is Successful"
 
 @app.route('/viewPatientBills', methods=["GET", "POST"])

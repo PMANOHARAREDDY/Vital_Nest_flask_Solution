@@ -76,6 +76,7 @@
             </form>
         </div>
     </div>
+    <hr>
     <div>
         <h2 style="text-align: center;">Medicinal Data</h2>
         <table border="1.5" cellpadding="15" cellspacing="0" style="margin: auto; background-color: rgb(250, 240, 255);">
@@ -105,6 +106,32 @@
                             <button class="supplier_dashboard_request_button" type="submit">Request</button>
                         </form>
                     </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2 class="industry_dashboard_sub_heading">Rejected Inventory Data</h2>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin: 25px;">
+            <thead>
+                <tr class="industry_dashboard_add_medicine_table">
+                    <th>Supplier ID</th>
+                    <th>Quantity</th>
+                    <th>Industry ID</th>
+                    <th>Medicine Name</th>
+                    <th>rejected Time-Stamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in rejected_data %}
+                <tr style="padding: 10px; text-align: center; font-size: 22px; font-weight: 400;">    
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[3] }}</td>
+                    <td>{{ record[4] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
