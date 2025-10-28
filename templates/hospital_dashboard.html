@@ -179,8 +179,15 @@
         <p style="text-align: center;">No pending visit requests.</p>
         {% endif %}
     </div>
-
-
-
+    <hr>
+    <div>
+        <h2 style="text-align: center;">View Billing Records</h2>
+        <div class="admin_patient_record_card_design">
+            <form action="/viewBillingRecords" method="get">
+                <input type="hidden" name="hsp_id" value="{{ hsp_id }}">
+                <button class="admin_patient_record_button_design" type="submit">View Records</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

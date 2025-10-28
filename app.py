@@ -659,5 +659,13 @@ def viewBloodDonationData():
     donations = curr.fetchall()
     return render_template('view_blood_donation_data.html', request_id=request_id, donations=donations)
 
+@app.route('/viewBillingRecords', methods=["POST", "GET"])
+def viewBillingRecords():
+    hsp_id = request.args.get('hsp_id')
+    query = "select * from patient_data where hsp_id = '{}'".format(hsp_id)
+    curr.execute(query)
+    res = curr.fetchall()
+    return render_template('billingRecords.html', records = res)
+
 if __name__ == "__main__":
     app.run(debug = True)

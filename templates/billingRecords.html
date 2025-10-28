@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalNest Hospital billing data</title>
+    <link rel = "stylesheet" href = "/static/style.css">
+</head>
+<body>
+        <div style="background-color: aliceblue;">
+        <h1>Billing Record</h1>
+        <table border="1.5" cellpadding="15" cellspacing="0" style="margin:center; background-color: rgb(250, 240, 255);">
+            <thead>
+                <tr>
+                    <th>Patient id</th>
+                    <th>Date of purchase</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+                {% for rec in records %}
+                <tr>
+                    <td>{{ rec[0] }}</td>
+                    <td>{{ rec[1] }}</td>
+                    <td>{{ rec[2] }}</td>
+                    <td>{{ rec[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
