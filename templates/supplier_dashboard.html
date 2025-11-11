@@ -75,7 +75,7 @@
                             <input  style="border-radius: 8px; width: 10vw; height: 32px;" type="hidden" name="supplier_id" value="{{manager_id}}">
                             <input  style="border-radius: 8px; width: 10vw; height: 32px;" type="hidden" name="ind_id" value="{{record[0]}}">
                             <input  style="border-radius: 8px; width: 10vw; height: 32px;"  type="hidden" name="med_name" value="{{record[1]}}">
-                            <input  style="border-radius: 8px; width: 10vw; height: 32px;"  type="number" min="100" max="5000" name="quantity">
+                            <input  style="border-radius: 8px; width: 10vw; height: 32px;"  type="number" min="100" max="{{record[4]}}" name="quantity">
                             <button  class="supplier_dashboard_request_button"  type="submit">Request</button>
                         </form>
                     </td>

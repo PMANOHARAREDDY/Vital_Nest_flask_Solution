@@ -422,6 +422,8 @@ def requestInventoryByHospital():
     ind_id = request.form.get('ind_id')
     med_name = request.form.get('med_name')
     hsp_id = request.form.get('hsp_id')
+    existing_quantity = request.form.get('existing_quantity')
+    print("existing_quantity",existing_quantity)
     query = "insert into inventory_request_to_supplier_by_hospital(supplier_id, quantity, ind_id, med_name, hsp_id) values('{}', {}, '{}', '{}', '{}')".format(supplier_id, quantity, ind_id, med_name, hsp_id)
     curr.execute(query)
     conn.commit()
